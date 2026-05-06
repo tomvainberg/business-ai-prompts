@@ -1339,11 +1339,12 @@ function renderAll() {
 // UPDATE COUNTS
 // ─────────────────────────────────────────────────────────
 function updateCounts(list) {
+  // "All" tab shows current filtered count; category tabs always show total
   const el = document.getElementById('count-all');
   if (el) el.textContent = list.length;
   Object.keys(CATS).forEach(cat => {
     const e = document.getElementById('count-' + cat);
-    if (e) e.textContent = list.filter(p => p.cat === cat).length;
+    if (e) e.textContent = PROMPTS.filter(p => p.cat === cat).length;
   });
 }
 
