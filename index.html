@@ -1020,17 +1020,6 @@
     font-family: monospace;
   }
 
-  /* ── KEYBOARD HINT ── */
-  .kbd-hint {
-    font-size: 11px;
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 0;
-    flex-wrap: wrap;
-  }
-  .kbd-hint .kbd { padding: 1px 5px; }
 
 </style>
 </head>
@@ -1165,13 +1154,6 @@
     </div>
   </div>
   <div class="results-info" id="results-info"></div>
-  <div class="kbd-hint" style="margin-top:6px">
-    <span>Shortcuts:</span>
-    <span class="kbd">J</span><span>/ K</span> navigate &nbsp;·&nbsp;
-    <span class="kbd">Space</span> expand &nbsp;·&nbsp;
-    <span class="kbd">C</span> copy &nbsp;·&nbsp;
-    <span class="kbd">Esc</span> clear
-  </div>
 </div>
 
 <!-- ── MAIN ── -->
@@ -1913,48 +1895,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { passive: true });
 });
 
-// ── KEYBOARD SHORTCUTS ────────────────────────────────────────────────────────
-(function() {
-  let focusedCard = -1;
-
-  function getCards() {
-    return Array.from(document.querySelectorAll('.prompt-card'));
-  }
-
-  function focusCard(idx) {
-    const cards = getCards();
-    if (idx < 0 || idx >= cards.length) return;
-    focusedCard = idx;
-    cards[idx].scrollIntoView({ block: 'center', behavior: 'smooth' });
-    cards[idx].style.outline = '2px solid var(--border-hi)';
-    cards[idx].style.outlineOffset = '2px';
-    cards.forEach(function(c, i) { if (i !== idx) { c.style.outline = ''; c.style.outlineOffset = ''; } });
-  }
-
-  document.addEventListener('keydown', function(e) {
-    // Don't fire when typing in search
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    const cards = getCards();
-
-    if (e.key === 'j' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      focusCard(Math.min(focusedCard + 1, cards.length - 1));
-    } else if (e.key === 'k' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      focusCard(Math.max(focusedCard - 1, 0));
-    } else if (e.key === ' ' && focusedCard >= 0) {
-      e.preventDefault();
-      const btn = cards[focusedCard].querySelector('.btn-expand');
-      if (btn) btn.click();
-    } else if (e.key === 'c' && focusedCard >= 0 && !e.metaKey && !e.ctrlKey) {
-      const btn = cards[focusedCard].querySelector('.btn-copy');
-      if (btn) btn.click();
-    } else if (e.key === 'Escape') {
-      focusedCard = -1;
-      cards.forEach(function(c) { c.style.outline = ''; c.style.outlineOffset = ''; });
-    }
-  });
-})();
 
 </script>
 
