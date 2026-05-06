@@ -201,6 +201,24 @@
 
   .nav-inner::-webkit-scrollbar { display: none; }
 
+  .guide-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .guide-btn:hover { border-color: var(--border-hi); color: var(--text); }
+
   .cat-btn {
     display: inline-flex;
     align-items: center;
@@ -1008,6 +1026,9 @@
     <button class="cat-btn" data-cat="saved" onclick="filterCat(this)" style="margin-left:auto">
       ⭐ Saved <span class="cat-count" id="count-saved">0</span>
     </button>
+    <a href="guide.html" target="_blank" class="guide-btn" title="Getting Started Guide">
+      📖 Guide
+    </a>
   </div>
   <div class="subcat-nav" id="subcat-nav"><div class="subcat-nav-inner"></div></div>
 </nav>
