@@ -713,49 +713,60 @@
     .toast { min-width: unset; }
   }
 
-  /* ── SUB-CATEGORY HEADERS ── */
-  .subcat-header {
-    display: flex;
+
+  /* ── SUBCAT NAV ── */
+  .subcat-nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 12px;
+    display: none;          /* hidden when "all" is active */
+    flex-wrap: wrap;
+    gap: 8px;
+    animation: subcatFadeIn 0.22s var(--ease-out) both;
+  }
+  .subcat-nav.visible { display: flex; }
+
+  @keyframes subcatFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .subcat-pill {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin: 32px 0 14px;
-    padding: 0 2px;
-  }
-
-  .subcat-header:first-of-type { margin-top: 8px; }
-
-  .subcat-icon {
-    font-size: 14px;
-    flex-shrink: 0;
-    line-height: 1;
-  }
-
-  .subcat-label {
-    font-size: 10.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .10em;
-    color: var(--text-dim);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .subcat-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    min-width: 20px;
-  }
-
-  .subcat-count {
-    font-size: 10.5px;
-    font-weight: 700;
-    color: var(--text-dim);
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
     background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 99px;
-    padding: 2px 9px;
-    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s, background 0.18s, box-shadow 0.18s;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .subcat-pill:hover {
+    border-color: var(--border-hi);
+    color: var(--text);
+    background: var(--surface3);
+  }
+  .subcat-pill.active {
+    border-color: var(--pill-color, #3B82F6);
+    background: color-mix(in srgb, var(--pill-color, #3B82F6) 12%, transparent);
+    color: var(--pill-color, #3B82F6);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pill-color, #3B82F6) 15%, transparent);
+  }
+  .subcat-pill .pill-count {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.75;
+    background: color-mix(in srgb, currentColor 15%, transparent);
+    border-radius: 10px;
+    padding: 1px 6px;
+    min-width: 22px;
+    text-align: center;
   }
 
 </style>
@@ -817,7 +828,9 @@
       ⭐ Customer Success <span class="cat-count" id="count-cs">20</span>
     </button>
   </div>
-</nav>
+
+<!-- ── SUBCAT FILTER PILLS ── -->
+<div class="subcat-nav" id="subcat-nav"></div>
 
 <!-- ── SEARCH ── -->
 <div class="search-wrap">
@@ -1145,6 +1158,7 @@ function getSubcat(p) {
 // STATE
 // ─────────────────────────────────────────────────────────
 let currentCat = 'all';
+let activeSubcat = 'all';
 let currentSearch = '';
 let expandedCards = new Set();
 
@@ -1249,6 +1263,10 @@ function filtered() {
   return PROMPTS.filter(p => {
     const matchCat = currentCat === 'all' || p.cat === currentCat;
     if (!matchCat) return false;
+    if (activeSubcat !== 'all') {
+      const sc = getSubcat(p);
+      if (!sc || sc.id !== activeSubcat) return false;
+    }
     if (!currentSearch) return true;
     const q = currentSearch.toLowerCase();
     return p.title.toLowerCase().includes(q) ||
@@ -1268,11 +1286,10 @@ function renderAll() {
   const info  = document.getElementById('results-info');
 
   empty.classList.toggle('show', list.length === 0);
-  info.textContent = (q || currentCat !== 'all')
+  info.textContent = (q || currentCat !== 'all' || activeSubcat !== 'all')
     ? list.length + ' prompt' + (list.length !== 1 ? 's' : '') + ' found'
     : '';
 
-  // Group by category
   const sections = {};
   list.forEach(p => { (sections[p.cat] = sections[p.cat] || []).push(p); });
 
@@ -1283,59 +1300,26 @@ function renderAll() {
     if (!sections[cat]) return;
     const cfg = CATS[cat];
     const ps  = sections[cat];
-    const scs = SUBCATS[cat] || [];
 
-    // Group prompts by sub-category
-    const scGroups = {};
-    const scOrder  = scs.map(sc => sc.id);
-    scs.forEach(sc => { scGroups[sc.id] = { sc, prompts: [] }; });
-
-    ps.forEach(p => {
-      const sc = getSubcat(p);
-      const id = sc ? sc.id : (scs.length ? scs[scs.length-1].id : 'other');
-      if (!scGroups[id]) scGroups[id] = { sc, prompts: [] };
-      scGroups[id].prompts.push(p);
-    });
-
-    let catHtml = [
+    const catHtml = [
       '<section class="category-section" id="section-' + cat + '">',
       '  <div class="category-header">',
       '    <div class="cat-dot" style="background:' + cfg.color + '"></div>',
       '    <div><div class="cat-title">' + cfg.label + '</div><div class="cat-subtitle">' + cfg.desc + '</div></div>',
       '    <span class="cat-tag">' + ps.length + ' prompts</span>',
       '  </div>',
+      '  <div class="prompt-grid">',
+      ps.map(p => renderCard(p, q)).join(''),
+      '  </div>',
+      '</section>',
     ].join('\n');
 
-    // If searching or filtering, skip sub-cat grouping (flat grid is cleaner)
-    if (q || (currentCat !== 'all' && scOrder.length === 0)) {
-      catHtml += '<div class="prompt-grid">' + ps.map(p => renderCard(p, q)).join('') + '</div>';
-    } else {
-      scOrder.forEach(scId => {
-        const grp = scGroups[scId];
-        if (!grp || grp.prompts.length === 0) return;
-        const sc = grp.sc || { label: scId, icon: '' };
-        catHtml += [
-          '<div class="subcat-header">',
-          '  <span class="subcat-icon">' + sc.icon + '</span>',
-          '  <span class="subcat-label">' + sc.label + '</span>',
-          '  <span class="subcat-line"></span>',
-          '  <span class="subcat-count">' + grp.prompts.length + '</span>',
-          '</div>',
-          '<div class="prompt-grid">',
-          grp.prompts.map(p => renderCard(p, q)).join(''),
-          '</div>',
-        ].join('\n');
-      });
-    }
-
-    catHtml += '</section>';
     htmlOut += catHtml;
   });
 
   main.querySelectorAll('.category-section').forEach(el => el.remove());
   main.insertAdjacentHTML('beforeend', htmlOut);
 
-  // Stagger card entrance animations
   main.querySelectorAll('.prompt-card').forEach((c, i) => {
     c.style.animationDelay = Math.min(i * 25, 260) + 'ms';
   });
@@ -1360,10 +1344,58 @@ function updateCounts(list) {
 // ─────────────────────────────────────────────────────────
 function filterCat(btn) {
   currentCat = btn.dataset.cat;
+  activeSubcat = 'all';
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  renderSubcatNav();
   renderAll();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterSubcat(scId) {
+  activeSubcat = scId;
+  document.querySelectorAll('.subcat-pill').forEach(p => p.classList.remove('active'));
+  document.querySelector('[data-sc="' + scId + '"]')?.classList.add('active');
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderSubcatNav() {
+  const nav = document.getElementById('subcat-nav');
+  if (!nav) return;
+  if (currentCat === 'all') {
+    nav.classList.remove('visible');
+    nav.innerHTML = '';
+    return;
+  }
+  const scs   = SUBCATS[currentCat] || [];
+  const color = CATS[currentCat]?.color || '#888';
+  if (scs.length === 0) {
+    nav.classList.remove('visible');
+    nav.innerHTML = '';
+    return;
+  }
+
+  // Count per sub-cat from the full (non-subcat-filtered) list
+  const catPrompts = PROMPTS.filter(p => p.cat === currentCat);
+  const counts = {};
+  scs.forEach(sc => { counts[sc.id] = 0; });
+  counts['all'] = catPrompts.length;
+  catPrompts.forEach(p => {
+    const sc = getSubcat(p);
+    if (sc) counts[sc.id] = (counts[sc.id] || 0) + 1;
+  });
+
+  let html = '<button class="subcat-pill' + (activeSubcat === 'all' ? ' active' : '') + '" data-sc="all" style="--pill-color:' + color + '" onclick="filterSubcat('all')">All <span class="pill-count">' + counts['all'] + '</span></button>';
+  scs.forEach(sc => {
+    const n = counts[sc.id] || 0;
+    if (n === 0) return;
+    const isActive = activeSubcat === sc.id;
+    html += '<button class="subcat-pill' + (isActive ? ' active' : '') + '" data-sc="' + sc.id + '" style="--pill-color:' + color + '" onclick="filterSubcat('' + sc.id + '')">' + sc.icon + ' ' + sc.label + ' <span class="pill-count">' + n + '</span></button>';
+  });
+
+  nav.innerHTML = html;
+  nav.classList.add('visible');
 }
 
 let _searchTimer;
@@ -1372,8 +1404,11 @@ function handleSearch(val) {
   _searchTimer = setTimeout(() => {
     currentSearch = val;
     currentCat = 'all';
+    activeSubcat = 'all';
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('[data-cat="all"]').classList.add('active');
+    const nav = document.getElementById('subcat-nav');
+    if (nav) { nav.classList.remove('visible'); nav.innerHTML = ''; }
     renderAll();
   }, 160);
 }
