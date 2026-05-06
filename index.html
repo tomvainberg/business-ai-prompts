@@ -713,6 +713,51 @@
     .toast { min-width: unset; }
   }
 
+  /* ── SUB-CATEGORY HEADERS ── */
+  .subcat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 32px 0 14px;
+    padding: 0 2px;
+  }
+
+  .subcat-header:first-of-type { margin-top: 8px; }
+
+  .subcat-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .subcat-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .10em;
+    color: var(--text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .subcat-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    min-width: 20px;
+  }
+
+  .subcat-count {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--text-dim);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 2px 9px;
+    flex-shrink: 0;
+  }
+
 </style>
 </head>
 <body>
@@ -1027,6 +1072,76 @@ const CATS = {
 };
 
 // ─────────────────────────────────────────────────────────
+// SUB-CATEGORY CONFIG
+// ─────────────────────────────────────────────────────────
+const SUBCATS = {
+  marketing: [
+    { id: 'social',   label: 'Social Media',     icon: '📱',
+      keys: ['linkedin','instagram','twitter','youtube','caption','thread','social proof','behind-the-scenes','take a stand','hot take','invisible pitch','archive gold','borrowed credibility','ethical differentiation','build the hunger','generous stranger','arc announcement','unfinished story','from dm','transparent ledger','open books','publisher pitch','content autopsy','open-loop','pre-launch'] },
+    { id: 'email',    label: 'Email',            icon: '📧',
+      keys: ['email','newsletter','launch announcement','black friday','testimonial request','webinar promo','honest raise','sleeping list','first impressions','final push','third-party','reactivation email','year-end','quarterly newsletter','welcome email for','inbox'] },
+    { id: 'content',  label: 'Content & SEO',    icon: '✍️',
+      keys: ['blog post','seo meta','meta description','podcast episode','content repurposing','case study','annual content audit','voice drift','make the boring','same product','repurposing'] },
+    { id: 'website',  label: 'Website & Ads',    icon: '🖥️',
+      keys: ['homepage hero','google ads','lead magnet','faq section','about page','crisis communication'] },
+  ],
+  sales: [
+    { id: 'outreach',  label: 'Cold Outreach',       icon: '📤',
+      keys: ['cold email','connection request','sales call opener','first touch','introduction','b2b freelancer'] },
+    { id: 'followup',  label: 'Follow-ups',          icon: '🔄',
+      keys: ['follow-up','follow up','ghost','silence','lost deal'] },
+    { id: 'proposals', label: 'Proposals & Closing', icon: '📋',
+      keys: ['proposal','closing email','price objection','counter the counter','scope increase','mid-project','rate negotiat'] },
+    { id: 'growth',    label: 'Upsells & Referrals', icon: '📈',
+      keys: ['upsell','referral request','renewal','win-back','reactivation','add without conflict','referral partnership'] },
+    { id: 'partner',   label: 'Partnerships',        icon: '🤝',
+      keys: ['partnership','alliance','guest post','joint venture','complementary','advertiser','build the alliance'] },
+  ],
+  hr: [
+    { id: 'recruit',   label: 'Recruiting',          icon: '🔍',
+      keys: ['job description','reference check','offer letter','rejection email','hiring rejection','intern','recruit'] },
+    { id: 'perform',   label: 'Performance & OKRs',  icon: '📊',
+      keys: ['performance review','performance improvement','pip','okr','calibration','1-on-1','recognition','promotion','compensation philosophy','managing up'] },
+    { id: 'onboard',   label: 'Onboarding',          icon: '👋',
+      keys: ['onboarding welcome','90-day','contractor vs','new hire faq','internship','team announcement','benefits summary'] },
+    { id: 'culture',   label: 'Team & Culture',      icon: '🌱',
+      keys: ['meeting agenda','team norms','culture statement','dei','remote team engagement','cross-department','manager feedback','retrospective','team conflict','1-on-1 meeting','company culture'] },
+    { id: 'sensitive', label: 'Sensitive Topics',    icon: '⚖️',
+      keys: ['termination','layoff','restructuring','warning letter','counter-offer','difficult conversation','emergency coverage','rehiring'] },
+  ],
+  operations: [
+    { id: 'process',   label: 'Processes & SOPs',    icon: '⚙️',
+      keys: ['sop','delegation checklist','workflow bottleneck','department handover','business continuity','client onboarding checklist','standard operating'] },
+    { id: 'reporting', label: 'Reporting',           icon: '📈',
+      keys: ['weekly business report','meeting recap','project status','sprint retrospective','monthly p&l','kpi dashboard','board','investor update','quarterly goals review','annual planning','project kickoff','post-mortem','failed project'] },
+    { id: 'finance',   label: 'Finance & Vendors',   icon: '💰',
+      keys: ['budget request','vendor evaluation','partner agreement','contract renegotiation','supplier negotiation','pricing strategy','m&a','due diligence','cost-cutting'] },
+    { id: 'strategy',  label: 'Strategy & Growth',   icon: '🎯',
+      keys: ['competitive analysis','tool evaluation','team productivity audit','scaling decision','org chart','new market','long-term vision','strategic pivot','ai adoption'] },
+    { id: 'advanced',  label: 'Risk & Compliance',   icon: '🛡️',
+      keys: ['risk assessment','data privacy','remote operations playbook','crisis response','business continuity'] },
+  ],
+  cs: [
+    { id: 'support',   label: 'Support & Complaints', icon: '🎧',
+      keys: ['complaint','refund','bug','outage','apology','public review','de-escalation','factually wrong','angry','irate'] },
+    { id: 'retention', label: 'Retention',            icon: '🔒',
+      keys: ['churn','win-back','re-engagement for churned','downgrade','pause','cancel','lapsed','detractor'] },
+    { id: 'growth',    label: 'Growth & Success',     icon: '🚀',
+      keys: ['upsell','renewal reminder','vip','appreciation','onboarding email','check-in','nps follow-up','thank you after','feature request','case study','playbook'] },
+  ],
+};
+
+function getSubcat(p) {
+  const scs = SUBCATS[p.cat];
+  if (!scs) return null;
+  const t = p.title.toLowerCase();
+  for (const sc of scs) {
+    if (sc.keys.some(k => t.includes(k.toLowerCase()))) return sc;
+  }
+  return scs[scs.length - 1]; // catch-all: last sub-cat
+}
+
+// ─────────────────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────────────────
 let currentCat = 'all';
@@ -1041,21 +1156,16 @@ function syntaxBody(raw) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
-  // Color XML tags <tag> and </tag>
   s = s.replace(/&lt;(\/?[\w_]+)&gt;/g,
     '<span class="xml-tag">&lt;$1&gt;</span>');
-  // Highlight [VARIABLE_PLACEHOLDER] in amber
   s = s.replace(/\[([A-Z][A-Z0-9_\s]{1,40})\]/g,
     '<span class="xml-var">[$1]</span>');
   return s;
 }
 
-// ─────────────────────────────────────────────────────────
-// SEARCH HIGHLIGHT
-// ─────────────────────────────────────────────────────────
 function highlight(text, q) {
   if (!q) return text;
-  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
   return text.replace(re, '<mark>$1</mark>');
 }
 
@@ -1096,7 +1206,6 @@ function addRipple(btn, e) {
 const ICON_COPY  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
 const ICON_CHECK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>';
 const ICON_CHEV  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>';
-const ICON_ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg>';
 
 // ─────────────────────────────────────────────────────────
 // RENDER CARD
@@ -1149,7 +1258,7 @@ function filtered() {
 }
 
 // ─────────────────────────────────────────────────────────
-// RENDER ALL
+// RENDER ALL — with sub-category grouping
 // ─────────────────────────────────────────────────────────
 function renderAll() {
   const main  = document.getElementById('main-content');
@@ -1163,36 +1272,72 @@ function renderAll() {
     ? list.length + ' prompt' + (list.length !== 1 ? 's' : '') + ' found'
     : '';
 
+  // Group by category
   const sections = {};
   list.forEach(p => { (sections[p.cat] = sections[p.cat] || []).push(p); });
 
   const catOrder = ['marketing','sales','hr','operations','cs'];
-  let html = '';
+  let htmlOut = '';
+
   catOrder.forEach(cat => {
     if (!sections[cat]) return;
     const cfg = CATS[cat];
     const ps  = sections[cat];
-    html += [
+    const scs = SUBCATS[cat] || [];
+
+    // Group prompts by sub-category
+    const scGroups = {};
+    const scOrder  = scs.map(sc => sc.id);
+    scs.forEach(sc => { scGroups[sc.id] = { sc, prompts: [] }; });
+
+    ps.forEach(p => {
+      const sc = getSubcat(p);
+      const id = sc ? sc.id : (scs.length ? scs[scs.length-1].id : 'other');
+      if (!scGroups[id]) scGroups[id] = { sc, prompts: [] };
+      scGroups[id].prompts.push(p);
+    });
+
+    let catHtml = [
       '<section class="category-section" id="section-' + cat + '">',
       '  <div class="category-header">',
       '    <div class="cat-dot" style="background:' + cfg.color + '"></div>',
       '    <div><div class="cat-title">' + cfg.label + '</div><div class="cat-subtitle">' + cfg.desc + '</div></div>',
       '    <span class="cat-tag">' + ps.length + ' prompts</span>',
       '  </div>',
-      '  <div class="prompt-grid">',
-      ps.map(p => renderCard(p, q)).join(''),
-      '  </div>',
-      '</section>'
     ].join('\n');
+
+    // If searching or filtering, skip sub-cat grouping (flat grid is cleaner)
+    if (q || (currentCat !== 'all' && scOrder.length === 0)) {
+      catHtml += '<div class="prompt-grid">' + ps.map(p => renderCard(p, q)).join('') + '</div>';
+    } else {
+      scOrder.forEach(scId => {
+        const grp = scGroups[scId];
+        if (!grp || grp.prompts.length === 0) return;
+        const sc = grp.sc || { label: scId, icon: '' };
+        catHtml += [
+          '<div class="subcat-header">',
+          '  <span class="subcat-icon">' + sc.icon + '</span>',
+          '  <span class="subcat-label">' + sc.label + '</span>',
+          '  <span class="subcat-line"></span>',
+          '  <span class="subcat-count">' + grp.prompts.length + '</span>',
+          '</div>',
+          '<div class="prompt-grid">',
+          grp.prompts.map(p => renderCard(p, q)).join(''),
+          '</div>',
+        ].join('\n');
+      });
+    }
+
+    catHtml += '</section>';
+    htmlOut += catHtml;
   });
 
   main.querySelectorAll('.category-section').forEach(el => el.remove());
-  main.insertAdjacentHTML('beforeend', html);
+  main.insertAdjacentHTML('beforeend', htmlOut);
 
-  // Stagger card animations
-  const cards = main.querySelectorAll('.prompt-card');
-  cards.forEach((c, i) => {
-    c.style.animationDelay = Math.min(i * 28, 280) + 'ms';
+  // Stagger card entrance animations
+  main.querySelectorAll('.prompt-card').forEach((c, i) => {
+    c.style.animationDelay = Math.min(i * 25, 260) + 'ms';
   });
 
   updateCounts(list);
@@ -1282,7 +1427,7 @@ function fallbackCopy(text, cb) {
   ta.style.cssText = 'position:fixed;opacity:0;top:-9999px;left:-9999px';
   document.body.appendChild(ta);
   ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
+  try { document.execCommand('copy'); } catch(err) {}
   document.body.removeChild(ta);
   cb();
 }
