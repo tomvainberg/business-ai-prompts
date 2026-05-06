@@ -476,7 +476,7 @@
   }
 
   .card-body.open {
-    max-height: 1400px;
+    max-height: 4000px;
     padding: 14px;
     opacity: 1;
   }
@@ -499,12 +499,13 @@
     border: 1px solid rgba(16,185,129,.18);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
+    margin-top: 10px;
     line-height: 1.6;
-    display: none;
+    display: block;
     font-style: italic;
   }
 
-  .card-sample.open { display: block; animation: fadeUp 0.3s var(--ease-out); }
+  .card-sample.open { animation: fadeUp 0.3s var(--ease-out); }
 
   .sample-label {
     font-size: 10px;
@@ -813,6 +814,87 @@
   .ai-pill:hover { border-color: var(--border-hi); color: var(--text); }
   .ai-pill svg { flex-shrink: 0; }
 
+  /* ── QUICK-START BANNER ── */
+  .quickstart-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    background: rgba(59,130,246,.06);
+    border-bottom: 1px solid rgba(59,130,246,.15);
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .quickstart-bar strong { color: #E6EDF3; }
+  .quickstart-bar .qs-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .quickstart-arrow { color: var(--text-dim); font-size: 11px; }
+
+  /* ── FAVORITES ── */
+  .btn-save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    flex-shrink: 0;
+    padding: 9px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+    font-size: 15px;
+    line-height: 1;
+    font-family: inherit;
+  }
+  .btn-save:hover { border-color: var(--border-hi); color: #FCD34D; }
+  .btn-save.saved { color: #FCD34D; border-color: rgba(252,211,77,.4); background: rgba(252,211,77,.07); }
+
+  /* Saved count badge on nav */
+  #count-saved {
+    background: rgba(252,211,77,.15);
+    color: #FCD34D;
+    border-radius: 10px;
+    padding: 0 5px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Copy counter toast strip */
+  .copy-counter {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: none;
+    align-items: center;
+    gap: 6px;
+    z-index: 9999;
+    animation: fadeUp 0.3s var(--ease-out);
+  }
+  .copy-counter.show { display: flex; }
+  .copy-counter strong { color: var(--text); }
+
 </style>
 </head>
 <body>
@@ -826,7 +908,7 @@
     200 Expert-Level AI Prompts · PLR Included
   </div>
   <h1>The Business AI Prompt Pack</h1>
-  <p class="hero-sub">Stop staring at a blank ChatGPT box. Paste, tweak, and ship — prompts so specific your business will finally sound like yours.</p>
+  <p class="hero-sub">Your prompts are ready. Browse by category, click <strong style="color:#E6EDF3">Copy</strong>, paste into any AI — fill the <span style="color:#FFA657;font-weight:600">[BRACKETS]</span> and get real results in seconds.</p>
   <div class="stats-row">
     <div class="stat">
       <div class="stat-num" id="total-count">200</div>
@@ -926,6 +1008,18 @@
   </div>
   <div class="subcat-nav" id="subcat-nav"><div class="subcat-nav-inner"></div></div>
 </nav>
+
+<!-- ── QUICKSTART BANNER ── -->
+<div class="quickstart-bar">
+  <strong>How to use:</strong>
+  <span class="qs-step">1️⃣ Pick a category</span>
+  <span class="quickstart-arrow">→</span>
+  <span class="qs-step">2️⃣ Click Copy on any prompt</span>
+  <span class="quickstart-arrow">→</span>
+  <span class="qs-step">3️⃣ Fill in the [BRACKETS]</span>
+  <span class="quickstart-arrow">→</span>
+  <span class="qs-step">4️⃣ Paste into ChatGPT &amp; go</span>
+</div>
 
 <!-- ── SEARCH ── -->
 <div class="search-wrap">
@@ -1254,6 +1348,30 @@ function getSubcat(p) {
 // ─────────────────────────────────────────────────────────
 let currentCat = 'all';
 let activeSubcat = 'all';
+let savedSet = new Set(JSON.parse(localStorage.getItem('saved-prompts') || '[]'));
+let copiedCount = parseInt(localStorage.getItem('copied-count') || '0');
+
+function isSaved(id) { return savedSet.has(id); }
+function toggleSave(id) {
+  if (savedSet.has(id)) { savedSet.delete(id); } else { savedSet.add(id); }
+  localStorage.setItem('saved-prompts', JSON.stringify([...savedSet]));
+  const btn = document.getElementById('save-' + id);
+  if (btn) btn.classList.toggle('saved', savedSet.has(id));
+  updateSavedCount();
+  if (currentCat === 'saved') renderAll();
+}
+function updateSavedCount() {
+  const el = document.getElementById('count-saved');
+  if (el) el.textContent = savedSet.size;
+}
+function incrementCopied() {
+  copiedCount++;
+  localStorage.setItem('copied-count', copiedCount);
+  const el = document.getElementById('copy-num');
+  const ctr = document.getElementById('copy-counter');
+  if (el) el.textContent = copiedCount;
+  if (ctr) { ctr.classList.add('show'); clearTimeout(ctr._t); ctr._t = setTimeout(() => ctr.classList.remove('show'), 3000); }
+}
 let currentSearch = '';
 let expandedCards = new Set();
 
@@ -1336,13 +1454,14 @@ function renderCard(p, q) {
     '  <div class="card-title">' + titleHL + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
     '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
-    '  <div class="card-sample' + (isOpen ? ' open' : '') + '" id="sample-' + p.id + '">',
+    '  <div class="card-sample" id="sample-' + p.id + '">',
     '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
     '  </div>',
     '  <div class="card-actions">',
     '    <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + '">',
     '      ' + ICON_COPY + ' Copy Prompt',
     '    </button>',
+    '    <button class="btn-save' + (isSaved(p.id) ? ' saved' : '') + '" id="save-' + p.id + '" onclick="toggleSave(' + p.id + ')" title="Save to favorites">⭐</button>',
     '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand') + '">',
     '      ' + ICON_CHEV,
     '    </button>',
@@ -1355,6 +1474,7 @@ function renderCard(p, q) {
 // FILTER
 // ─────────────────────────────────────────────────────────
 function filtered() {
+  if (currentCat === 'saved') return PROMPTS.filter(p => savedSet.has(p.id));
   return PROMPTS.filter(p => {
     const matchCat = currentCat === 'all' || p.cat === currentCat;
     if (!matchCat) return false;
@@ -1605,7 +1725,8 @@ function scrollToTop() {
 // ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('total-count').textContent = PROMPTS.length;
-  renderAll();
+  updateSavedCount();
+    renderAll();
 });
 
 </script>
@@ -1619,5 +1740,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <button id="scroll-top" class="scroll-top" onclick="scrollToTop()" title="Back to top">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
 </button>
+<!-- ── COPY COUNTER ── -->
+<div class="copy-counter" id="copy-counter"><strong id="copy-num">0</strong> prompts copied this session</div>
+
 </body>
 </html>
