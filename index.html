@@ -1357,7 +1357,6 @@ function filterCat(btn) {
   btn.classList.add('active');
   renderSubcatNav();
   renderAll();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function filterSubcat(scId) {
@@ -1366,7 +1365,6 @@ function filterSubcat(scId) {
     p.classList.toggle('active', p.dataset.sc === scId);
   });
   renderAll();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderSubcatNav() {
