@@ -714,15 +714,9 @@
   }
 
 
-  /* ── SUBCAT NAV (second tab row) ── */
+  /* ── SUBCAT NAV (second row inside sticky-nav) ── */
   .subcat-nav {
-    position: sticky;
-    top: 57px;          /* sits just below the main sticky-nav */
-    z-index: 99;
-    background: rgba(13,17,23,.85);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
     padding: 0 24px;
     display: none;
     animation: subcatFadeIn 0.2s var(--ease-out) both;
@@ -843,9 +837,8 @@
       ⭐ Customer Success <span class="cat-count" id="count-cs">20</span>
     </button>
   </div>
-
-<!-- ── SUBCAT FILTER PILLS ── -->
-<div class="subcat-nav" id="subcat-nav"></div>
+  <div class="subcat-nav" id="subcat-nav"><div class="subcat-nav-inner"></div></div>
+</nav>
 
 <!-- ── SEARCH ── -->
 <div class="search-wrap">
@@ -1369,47 +1362,60 @@ function filterCat(btn) {
 
 function filterSubcat(scId) {
   activeSubcat = scId;
-  document.querySelectorAll('.subcat-pill').forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-sc="' + scId + '"]')?.classList.add('active');
+  document.querySelectorAll('.subcat-pill').forEach(function(p) {
+    p.classList.toggle('active', p.dataset.sc === scId);
+  });
   renderAll();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderSubcatNav() {
-  const nav = document.getElementById('subcat-nav');
-  if (!nav) return;
+  const nav   = document.getElementById('subcat-nav');
+  const inner = nav && nav.querySelector('.subcat-nav-inner');
+  if (!nav || !inner) return;
+
   if (currentCat === 'all') {
     nav.classList.remove('visible');
-    nav.innerHTML = '';
-    return;
-  }
-  const scs   = SUBCATS[currentCat] || [];
-  const color = CATS[currentCat]?.color || '#888';
-  if (scs.length === 0) {
-    nav.classList.remove('visible');
-    nav.innerHTML = '';
+    inner.innerHTML = '';
     return;
   }
 
-  // Count per sub-cat from the full (non-subcat-filtered) list
-  const catPrompts = PROMPTS.filter(p => p.cat === currentCat);
-  const counts = {};
-  scs.forEach(sc => { counts[sc.id] = 0; });
-  counts['all'] = catPrompts.length;
-  catPrompts.forEach(p => {
+  const scs   = SUBCATS[currentCat] || [];
+  const color = CATS[currentCat] ? CATS[currentCat].color : '#888';
+  if (scs.length === 0) {
+    nav.classList.remove('visible');
+    inner.innerHTML = '';
+    return;
+  }
+
+  const catPrompts = PROMPTS.filter(function(p) { return p.cat === currentCat; });
+  const counts = { all: catPrompts.length };
+  scs.forEach(function(sc) { counts[sc.id] = 0; });
+  catPrompts.forEach(function(p) {
     const sc = getSubcat(p);
     if (sc) counts[sc.id] = (counts[sc.id] || 0) + 1;
   });
 
-  let btns = '<button class="subcat-pill' + (activeSubcat === 'all' ? ' active' : '') + '" data-sc="all" style="--pill-color:' + color + '" onclick="filterSubcat(\'all\')">All <span class="pill-count">' + counts['all'] + '</span></button>';
-  scs.forEach(sc => {
+  // Build buttons via DOM (no string escaping issues)
+  inner.innerHTML = '';
+
+  function makeBtn(scId, label, count) {
+    const btn = document.createElement('button');
+    btn.className = 'subcat-pill' + (activeSubcat === scId ? ' active' : '');
+    btn.dataset.sc = scId;
+    btn.style.setProperty('--pill-color', color);
+    btn.innerHTML = label + ' <span class="pill-count">' + count + '</span>';
+    btn.addEventListener('click', function() { filterSubcat(scId); });
+    return btn;
+  }
+
+  inner.appendChild(makeBtn('all', 'All', counts['all']));
+  scs.forEach(function(sc) {
     const n = counts[sc.id] || 0;
     if (n === 0) return;
-    const isActive = activeSubcat === sc.id;
-    btns += '<button class="subcat-pill' + (isActive ? ' active' : '') + '" data-sc="' + sc.id + '" style="--pill-color:' + color + '" onclick="filterSubcat(\'' + sc.id + '\')">' + sc.icon + ' ' + sc.label + ' <span class="pill-count">' + n + '</span></button>';
+    inner.appendChild(makeBtn(sc.id, sc.icon + ' ' + sc.label, n));
   });
 
-  nav.innerHTML = '<div class="subcat-nav-inner">' + btns + '</div>';
   nav.classList.add('visible');
 }
 
