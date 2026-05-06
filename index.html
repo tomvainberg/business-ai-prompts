@@ -714,59 +714,74 @@
   }
 
 
-  /* ── SUBCAT NAV ── */
+  /* ── SUBCAT NAV (second tab row) ── */
   .subcat-nav {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px 12px;
-    display: none;          /* hidden when "all" is active */
-    flex-wrap: wrap;
-    gap: 8px;
-    animation: subcatFadeIn 0.22s var(--ease-out) both;
+    position: sticky;
+    top: 57px;          /* sits just below the main sticky-nav */
+    z-index: 99;
+    background: rgba(13,17,23,.85);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: none;
+    animation: subcatFadeIn 0.2s var(--ease-out) both;
   }
-  .subcat-nav.visible { display: flex; }
+  .subcat-nav.visible { display: block; }
+
+  .subcat-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 8px 0;
+  }
+  .subcat-nav-inner::-webkit-scrollbar { display: none; }
 
   @keyframes subcatFadeIn {
-    from { opacity: 0; transform: translateY(-6px); }
+    from { opacity: 0; transform: translateY(-4px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   .subcat-pill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 5px 13px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--surface2);
+    gap: 7px;
+    padding: 6px 13px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: transparent;
     color: var(--text-muted);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: border-color 0.18s, color 0.18s, background 0.18s, box-shadow 0.18s;
+    transition: all 180ms var(--ease-ui);
     white-space: nowrap;
+    flex-shrink: 0;
+    font-family: inherit;
     -webkit-tap-highlight-color: transparent;
   }
   .subcat-pill:hover {
     border-color: var(--border-hi);
     color: var(--text);
-    background: var(--surface3);
+    background: var(--surface);
   }
   .subcat-pill.active {
-    border-color: var(--pill-color, #3B82F6);
-    background: color-mix(in srgb, var(--pill-color, #3B82F6) 12%, transparent);
-    color: var(--pill-color, #3B82F6);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pill-color, #3B82F6) 15%, transparent);
+    color: #fff;
+    border-color: transparent;
+    font-weight: 600;
+    background: var(--pill-color, #3B82F6);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--pill-color, #3B82F6) 40%, transparent);
   }
   .subcat-pill .pill-count {
-    font-size: 11px;
+    background: rgba(255,255,255,.18);
+    border-radius: 99px;
+    padding: 1px 7px;
+    font-size: 10.5px;
     font-weight: 600;
-    opacity: 0.75;
-    background: color-mix(in srgb, currentColor 15%, transparent);
-    border-radius: 10px;
-    padding: 1px 6px;
-    min-width: 22px;
-    text-align: center;
   }
 
 </style>
@@ -1386,15 +1401,15 @@ function renderSubcatNav() {
     if (sc) counts[sc.id] = (counts[sc.id] || 0) + 1;
   });
 
-  let html = '<button class="subcat-pill' + (activeSubcat === 'all' ? ' active' : '') + '" data-sc="all" style="--pill-color:' + color + '" onclick="filterSubcat('all')">All <span class="pill-count">' + counts['all'] + '</span></button>';
+  let btns = '<button class="subcat-pill' + (activeSubcat === 'all' ? ' active' : '') + '" data-sc="all" style="--pill-color:' + color + '" onclick="filterSubcat(\'all\')">All <span class="pill-count">' + counts['all'] + '</span></button>';
   scs.forEach(sc => {
     const n = counts[sc.id] || 0;
     if (n === 0) return;
     const isActive = activeSubcat === sc.id;
-    html += '<button class="subcat-pill' + (isActive ? ' active' : '') + '" data-sc="' + sc.id + '" style="--pill-color:' + color + '" onclick="filterSubcat('' + sc.id + '')">' + sc.icon + ' ' + sc.label + ' <span class="pill-count">' + n + '</span></button>';
+    btns += '<button class="subcat-pill' + (isActive ? ' active' : '') + '" data-sc="' + sc.id + '" style="--pill-color:' + color + '" onclick="filterSubcat(\'' + sc.id + '\')">' + sc.icon + ' ' + sc.label + ' <span class="pill-count">' + n + '</span></button>';
   });
 
-  nav.innerHTML = html;
+  nav.innerHTML = '<div class="subcat-nav-inner">' + btns + '</div>';
   nav.classList.add('visible');
 }
 
