@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Business AI Prompt Pack — 200 Prompts for Business Owners</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
   /* ── RESET & BASE ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,21 +14,23 @@
     --bg:          #0D1117;
     --surface:     #161B22;
     --surface2:    #1C2330;
+    --surface3:    #21262D;
     --border:      #30363D;
+    --border-hi:   #3D444D;
     --text:        #E6EDF3;
     --text-muted:  #7D8590;
     --text-dim:    #484F58;
 
-    /* category colours */
-    --c-marketing: #3B82F6;   /* blue   */
-    --c-sales:     #10B981;   /* emerald*/
-    --c-hr:        #8B5CF6;   /* violet */
-    --c-ops:       #F59E0B;   /* amber  */
-    --c-cs:        #06B6D4;   /* cyan   */
+    --c-marketing: #3B82F6;
+    --c-sales:     #10B981;
+    --c-hr:        #8B5CF6;
+    --c-ops:       #F59E0B;
+    --c-cs:        #06B6D4;
 
-    --radius:      12px;
-    --radius-sm:   8px;
-    --shadow:      0 4px 24px rgba(0,0,0,.4);
+    --radius:    12px;
+    --radius-sm: 8px;
+    --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-ui:   cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   html { scroll-behavior: smooth; }
@@ -34,108 +38,124 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
-  }
-
-  /* ── GOOGLE FONTS SUBSTITUTE (system fonts fallback chain) ── */
-  h1, h2, h3 {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(135deg, #0D1117 0%, #1a1f2e 50%, #0D1117 100%);
+    background: #0D1117;
     border-bottom: 1px solid var(--border);
-    padding: 64px 24px 48px;
+    padding: 72px 24px 56px;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
 
-  .hero::before {
-    content: '';
+  .hero-glow-a, .hero-glow-b {
     position: absolute;
-    top: -40%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%);
+    border-radius: 50%;
     pointer-events: none;
+    filter: blur(60px);
+    animation: blobFloat 9s ease-in-out infinite;
+  }
+  .hero-glow-a {
+    width: 700px; height: 500px;
+    top: -200px; left: 50%; transform: translateX(-55%);
+    background: radial-gradient(ellipse, rgba(59,130,246,.14) 0%, transparent 70%);
+  }
+  .hero-glow-b {
+    width: 400px; height: 400px;
+    top: -100px; right: -80px;
+    background: radial-gradient(ellipse, rgba(139,92,246,.10) 0%, transparent 70%);
+    animation-delay: -4.5s;
+  }
+
+  @keyframes blobFloat {
+    0%,100% { transform: translateX(-55%) translateY(0); }
+    50%      { transform: translateX(-55%) translateY(-18px); }
   }
 
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(59,130,246,.15);
-    border: 1px solid rgba(59,130,246,.3);
+    background: rgba(59,130,246,.10);
+    border: 1px solid rgba(59,130,246,.22);
     border-radius: 99px;
-    padding: 6px 16px;
-    font-size: 13px;
+    padding: 6px 18px;
+    font-size: 12.5px;
+    font-weight: 500;
     color: #93C5FD;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
+    animation: fadeDown 0.55s var(--ease-out) both;
+    position: relative;
   }
 
   .hero-badge-dot {
     width: 7px; height: 7px;
     background: #3B82F6;
     border-radius: 50%;
-    animation: pulse 2s infinite;
+    animation: pulse 2.2s infinite;
   }
 
   @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: .5; transform: scale(.8); }
+    0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(59,130,246,.5); }
+    50%      { opacity: .6; transform: scale(.8); box-shadow: 0 0 0 7px rgba(59,130,246,0); }
   }
 
   .hero h1 {
-    font-size: clamp(28px, 5vw, 52px);
-    line-height: 1.15;
+    font-size: clamp(30px, 5.5vw, 58px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, #E6EDF3 30%, #93C5FD 100%);
+    background: linear-gradient(135deg, #E6EDF3 20%, #93C5FD 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: fadeDown 0.55s 0.1s var(--ease-out) both;
   }
 
   .hero-sub {
     font-size: 17px;
     color: var(--text-muted);
-    max-width: 560px;
-    margin: 0 auto 32px;
+    max-width: 540px;
+    margin: 0 auto 36px;
+    line-height: 1.68;
+    animation: fadeDown 0.55s 0.18s var(--ease-out) both;
   }
 
   .stats-row {
     display: flex;
     justify-content: center;
-    gap: 32px;
+    gap: 36px;
     flex-wrap: wrap;
-    margin-top: 40px;
+    margin-top: 44px;
+    animation: fadeDown 0.55s 0.26s var(--ease-out) both;
   }
 
-  .stat {
-    text-align: center;
-  }
+  .stat { text-align: center; }
 
   .stat-num {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 800;
     color: #E6EDF3;
-    font-family: 'Georgia', serif;
+    letter-spacing: -0.025em;
+    line-height: 1;
   }
 
   .stat-label {
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: 11px;
+    color: var(--text-dim);
     text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-top: 2px;
+    letter-spacing: .09em;
+    margin-top: 5px;
+    font-weight: 600;
   }
 
   .stat-divider {
@@ -145,14 +165,25 @@
     align-self: center;
   }
 
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   /* ── STICKY NAV ── */
   .sticky-nav {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(13,17,23,.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(13,17,23,.88);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
   }
@@ -162,11 +193,10 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     overflow-x: auto;
     scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   .nav-inner::-webkit-scrollbar { display: none; }
@@ -174,62 +204,67 @@
   .cat-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    gap: 7px;
+    padding: 7px 14px;
     border-radius: 99px;
     border: 1px solid var(--border);
     background: transparent;
     color: var(--text-muted);
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 500;
     cursor: pointer;
-    transition: all .2s;
+    transition: all 180ms var(--ease-ui);
     white-space: nowrap;
     flex-shrink: 0;
+    font-family: inherit;
   }
 
-  .cat-btn:hover { border-color: #484F58; color: var(--text); }
+  .cat-btn:hover {
+    border-color: var(--border-hi);
+    color: var(--text);
+    background: var(--surface);
+  }
 
   .cat-btn.active {
     color: #fff;
     border-color: transparent;
+    font-weight: 600;
   }
 
-  .cat-btn[data-cat="all"].active         { background: #3B82F6; }
-  .cat-btn[data-cat="marketing"].active   { background: var(--c-marketing); }
-  .cat-btn[data-cat="sales"].active       { background: var(--c-sales); }
-  .cat-btn[data-cat="hr"].active          { background: var(--c-hr); }
-  .cat-btn[data-cat="operations"].active  { background: var(--c-ops); }
-  .cat-btn[data-cat="cs"].active    { background: var(--c-cs); }
+  .cat-btn[data-cat="all"].active         { background: linear-gradient(135deg,#3B82F6,#6366F1); box-shadow: 0 0 14px rgba(99,102,241,.3); }
+  .cat-btn[data-cat="marketing"].active   { background: var(--c-marketing); box-shadow: 0 0 14px rgba(59,130,246,.3); }
+  .cat-btn[data-cat="sales"].active       { background: var(--c-sales);     box-shadow: 0 0 14px rgba(16,185,129,.3); }
+  .cat-btn[data-cat="hr"].active          { background: var(--c-hr);        box-shadow: 0 0 14px rgba(139,92,246,.3); }
+  .cat-btn[data-cat="operations"].active  { background: var(--c-ops);       box-shadow: 0 0 14px rgba(245,158,11,.3); }
+  .cat-btn[data-cat="cs"].active          { background: var(--c-cs);        box-shadow: 0 0 14px rgba(6,182,212,.3); }
 
   .cat-count {
-    background: rgba(255,255,255,.15);
+    background: rgba(255,255,255,.18);
     border-radius: 99px;
-    padding: 1px 7px;
-    font-size: 11px;
-    font-weight: 600;
+    padding: 1px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
   }
 
   /* ── SEARCH ── */
   .search-wrap {
     max-width: 1200px;
-    margin: 32px auto 0;
+    margin: 28px auto 0;
     padding: 0 24px;
   }
 
   .search-box {
     position: relative;
-    max-width: 480px;
+    max-width: 520px;
   }
 
   .search-icon {
     position: absolute;
-    left: 14px;
+    left: 13px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-dim);
     pointer-events: none;
-    font-size: 16px;
   }
 
   .search-input {
@@ -239,56 +274,98 @@
     border-radius: var(--radius-sm);
     color: var(--text);
     font-size: 14px;
-    padding: 11px 14px 11px 40px;
+    padding: 11px 90px 11px 40px;
     outline: none;
-    transition: border-color .2s;
+    transition: border-color 200ms, box-shadow 200ms;
+    font-family: inherit;
   }
 
   .search-input::placeholder { color: var(--text-dim); }
-  .search-input:focus { border-color: #3B82F6; }
 
-  /* ── MAIN CONTENT ── */
+  .search-input:focus {
+    border-color: rgba(59,130,246,.6);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+  }
+
+  .search-shortcut {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    pointer-events: none;
+    transition: opacity 180ms;
+  }
+
+  .search-input:focus ~ .search-shortcut { opacity: 0; }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border-hi);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ── MAIN ── */
   .main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 32px 24px 80px;
+    padding: 32px 24px 100px;
+  }
+
+  .results-info {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 10px 0 0;
+    font-weight: 500;
   }
 
   /* ── CATEGORY SECTION ── */
   .category-section {
-    margin-bottom: 56px;
+    margin-bottom: 60px;
+    animation: fadeUp 0.45s var(--ease-out) both;
   }
 
   .category-header {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
   }
 
   .cat-dot {
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
   }
 
   .cat-title {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 700;
     color: var(--text);
+    letter-spacing: -0.01em;
   }
 
   .cat-subtitle {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--text-muted);
     margin-top: 2px;
   }
 
   .cat-tag {
     margin-left: auto;
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 600;
     color: var(--text-muted);
     border: 1px solid var(--border);
     border-radius: 99px;
@@ -300,117 +377,149 @@
   .prompt-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 16px;
+    gap: 12px;
   }
 
   /* ── PROMPT CARD ── */
   .prompt-card {
     background: var(--surface);
     border: 1px solid var(--border);
+    border-left: 3px solid transparent;
     border-radius: var(--radius);
-    padding: 20px;
+    padding: 18px 18px 16px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    transition: border-color .2s, transform .15s, box-shadow .2s;
+    gap: 11px;
+    transition:
+      border-color 200ms var(--ease-ui),
+      border-left-color 200ms var(--ease-ui),
+      box-shadow 200ms var(--ease-ui),
+      transform 200ms var(--ease-ui),
+      background 200ms var(--ease-ui);
     cursor: default;
+    animation: fadeUp 0.4s var(--ease-out) both;
   }
 
+  .prompt-card[data-cat="marketing"] { --accent: var(--c-marketing); }
+  .prompt-card[data-cat="sales"]     { --accent: var(--c-sales); }
+  .prompt-card[data-cat="hr"]        { --accent: var(--c-hr); }
+  .prompt-card[data-cat="operations"]{ --accent: var(--c-ops); }
+  .prompt-card[data-cat="cs"]        { --accent: var(--c-cs); }
+
   .prompt-card:hover {
-    border-color: #484F58;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
+    border-left-color: var(--accent, #3B82F6);
+    border-color: var(--border-hi);
+    box-shadow: 0 4px 20px rgba(0,0,0,.35),
+                inset 0 0 0 0 transparent;
+    transform: translateY(-2px);
+    background: var(--surface2);
   }
 
   .card-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
   }
 
   .card-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
     padding: 3px 10px;
     border-radius: 99px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .03em;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .025em;
     flex-shrink: 0;
   }
 
   .card-num {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--text-dim);
     flex-shrink: 0;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .04em;
   }
 
   .card-title {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     color: var(--text);
-    line-height: 1.4;
-    font-family: 'Inter', sans-serif;
+    line-height: 1.45;
   }
 
   .card-for {
     font-size: 12px;
     color: var(--text-muted);
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
-  /* prompt body — collapsed by default */
+  /* ── PROMPT BODY ── */
   .card-body {
-    background: var(--surface2);
+    background: #0d1117;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 14px;
-    font-size: 12.5px;
+    padding: 0 14px;
+    font-size: 11.5px;
     color: #C9D1D9;
-    line-height: 1.65;
+    line-height: 1.75;
     white-space: pre-wrap;
     word-break: break-word;
     max-height: 0;
     overflow: hidden;
-    transition: max-height .35s ease, padding .35s ease, opacity .25s;
+    transition: max-height 420ms var(--ease-out),
+                padding 300ms var(--ease-out),
+                opacity 300ms;
     opacity: 0;
-    font-family: 'SFMono-Regular', 'Consolas', monospace;
+    font-family: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   }
 
   .card-body.open {
-    max-height: 800px;
+    max-height: 1400px;
+    padding: 14px;
     opacity: 1;
   }
 
-  /* sample output */
+  /* XML syntax colours */
+  .xml-tag  { color: #79C0FF; font-weight: 500; }
+  .xml-var  {
+    color: #FFA657;
+    background: rgba(255,166,87,.13);
+    border-radius: 3px;
+    padding: 0 3px;
+    font-weight: 600;
+  }
+
+  /* ── SAMPLE OUTPUT ── */
   .card-sample {
     font-size: 12px;
     color: #6EE7B7;
-    background: rgba(16,185,129,.08);
-    border: 1px solid rgba(16,185,129,.2);
+    background: rgba(16,185,129,.07);
+    border: 1px solid rgba(16,185,129,.18);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
-    line-height: 1.55;
+    line-height: 1.6;
     display: none;
+    font-style: italic;
   }
 
-  .card-sample.open { display: block; }
+  .card-sample.open { display: block; animation: fadeUp 0.3s var(--ease-out); }
 
   .sample-label {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .08em;
+    letter-spacing: .1em;
     color: #10B981;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    font-style: normal;
   }
 
-  /* card actions */
+  /* ── CARD ACTIONS ── */
   .card-actions {
     display: flex;
-    gap: 8px;
+    gap: 7px;
     margin-top: auto;
   }
 
@@ -419,21 +528,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 7px;
     padding: 9px 14px;
     border-radius: var(--radius-sm);
     border: none;
-    background: #3B82F6;
+    background: var(--accent, #3B82F6);
     color: #fff;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background .15s, transform .1s;
+    transition: opacity 150ms, transform 100ms, box-shadow 150ms, background 200ms;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: .01em;
   }
 
-  .btn-copy:hover { background: #2563EB; }
+  .btn-copy:hover { opacity: .9; }
   .btn-copy:active { transform: scale(.97); }
-  .btn-copy.copied { background: #10B981; }
+
+  .btn-copy.copied {
+    background: #10B981 !important;
+    box-shadow: 0 0 14px rgba(16,185,129,.35);
+  }
+
+  /* Ripple */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    transform: scale(0);
+    animation: rippleAnim 550ms linear;
+    pointer-events: none;
+  }
+
+  @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
   .btn-expand {
     display: flex;
@@ -446,12 +575,86 @@
     background: transparent;
     color: var(--text-muted);
     cursor: pointer;
-    transition: all .15s;
+    transition: all 180ms var(--ease-ui);
     flex-shrink: 0;
-    font-size: 16px;
+    font-family: inherit;
   }
 
-  .btn-expand:hover { border-color: #484F58; color: var(--text); background: var(--surface2); }
+  .btn-expand:hover { border-color: var(--border-hi); color: var(--text); background: var(--surface2); }
+
+  .btn-expand svg {
+    transition: transform 300ms var(--ease-out);
+  }
+  .btn-expand.is-open svg { transform: rotate(180deg); }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #21262D;
+    border: 1px solid var(--border-hi);
+    border-radius: var(--radius-sm);
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    box-shadow: 0 8px 32px rgba(0,0,0,.55);
+    transform: translateX(130%);
+    opacity: 0;
+    transition: transform 300ms var(--ease-out), opacity 300ms var(--ease-out);
+    min-width: 230px;
+  }
+
+  .toast.show { transform: translateX(0); opacity: 1; }
+
+  .toast-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: #10B981;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  /* ── SCROLL TO TOP ── */
+  .scroll-top {
+    position: fixed;
+    bottom: 28px;
+    left: 24px;
+    z-index: 999;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border-hi);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 250ms, transform 250ms var(--ease-out), background 150ms;
+    box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  }
+
+  .scroll-top.visible { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover   { background: var(--surface3); color: var(--text); }
 
   /* ── EMPTY STATE ── */
   .empty-state {
@@ -461,63 +664,63 @@
     display: none;
   }
 
-  .empty-state.show { display: block; }
-  .empty-icon { font-size: 40px; margin-bottom: 16px; }
-  .empty-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-
-  /* ── RESULTS COUNT ── */
-  .results-info {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    margin-top: 8px;
-  }
+  .empty-state.show { display: block; animation: fadeUp 0.4s var(--ease-out); }
+  .empty-icon  { font-size: 48px; margin-bottom: 20px; opacity: .45; }
+  .empty-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 
   /* ── FOOTER ── */
   .footer {
     border-top: 1px solid var(--border);
     padding: 40px 24px;
     text-align: center;
-    color: var(--text-muted);
+    color: var(--text-dim);
     font-size: 13px;
   }
 
   .footer-logo {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
-    color: var(--text);
-    font-family: 'Georgia', serif;
+    color: var(--text-muted);
     margin-bottom: 8px;
+    letter-spacing: -0.01em;
   }
 
   /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #484F58; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
+
+  /* ── SEARCH HIGHLIGHT ── */
+  mark {
+    background: rgba(59,130,246,.28);
+    color: #93C5FD;
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 600;
+  }
 
   /* ── MOBILE ── */
   @media (max-width: 640px) {
-    .hero { padding: 48px 16px 40px; }
-    .stats-row { gap: 20px; }
+    .hero { padding: 56px 16px 44px; }
+    .stats-row { gap: 24px; }
     .stat-divider { display: none; }
-    .prompt-grid { grid-template-columns: 1fr; }
-    .main { padding: 24px 16px 60px; }
+    .prompt-grid { grid-template-columns: 1fr; gap: 10px; }
+    .main { padding: 24px 16px 80px; }
+    .search-wrap { padding: 0 16px; }
+    .scroll-top { display: none; }
+    .toast-container { bottom: 16px; right: 16px; left: 16px; }
+    .toast { min-width: unset; }
   }
 
-  /* ── HIGHLIGHT for search ── */
-  mark {
-    background: rgba(59,130,246,.35);
-    color: inherit;
-    border-radius: 2px;
-    padding: 0 1px;
-  }
 </style>
 </head>
 <body>
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <div class="hero-glow-a"></div>
+  <div class="hero-glow-b"></div>
   <div class="hero-badge">
     <span class="hero-badge-dot"></span>
     200 Expert-Level AI Prompts · PLR Included
@@ -574,8 +777,11 @@
 <!-- ── SEARCH ── -->
 <div class="search-wrap">
   <div class="search-box">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" type="search" id="search" placeholder="Search prompts… e.g. cold email, job description, SOP" oninput="handleSearch(this.value)">
+    <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    <input class="search-input" type="search" id="search" placeholder="Search prompts… e.g. cold email, SOP, onboarding" oninput="handleSearch(this.value)">
+    <div class="search-shortcut">
+      <span class="kbd">&#8984;</span><span class="kbd">K</span>
+    </div>
   </div>
   <div class="results-info" id="results-info"></div>
 </div>
@@ -808,9 +1014,10 @@ const PROMPTS = [
   {"id":200,"cat":"cs","title":"Write Customer Success Playbook One-Pager — What CS Looks Like at Your Company — Clarity for You and Your Team","for":"Solopreneurs and small business owners who want to define, document, and communicate their customer success philosophy — useful for hiring, onboarding VAs or contractors, or simply getting clarity for themselves","body":"<role>\nCustomer success operations consultant with 13 years of experience building CS playbooks for early-stage companies and solopreneur businesses, trained in the principle that a one-pager CS playbook should be opinionated enough to be useful and short enough to be read. Write this as if reviewed by a new contractor or VA who needs to understand what good customer success looks like at this company — on day one, with no prior context.\n</role>\n<instructions>\nWrite a Customer Success One-Pager for [BUSINESS_NAME], a [BUSINESS_TYPE] run by [YOUR_NAME]. The playbook must define: what customer success means here (in plain language), the CS lifecycle stages and what happens at each one, response time standards, escalation rules, and the one principle that overrides all others when in doubt. The document must be opinionated — not generic.\n</instructions>\n<thinking_process>\nBefore writing, answer in scratchpad:\n1. What is this customer's emotional state right now — in this case \"this customer\" is the new contractor reading this playbook on day one. They want to know: what does good look like here, and what will get me in trouble if I get it wrong?\n2. What outcome do they actually want vs. what they're saying they want: they want confidence to handle situations without asking every time. What are the 3–4 scenarios that come up most and require a clear rule?\n3. What response would make this worse (a generic CS handbook with buzzwords, 10 pages of policy, no examples) vs. what would actually be useful (specific response time commitments, named escalation paths, a clear \"when in doubt\" principle)?\nThen write.\n</thinking_process>\n<output_format>\nOne-pager format, 300–400 words, 5 clearly labeled sections:\n1. What Customer Success Means Here (2–3 sentences, opinionated)\n2. The CS Lifecycle (5–6 stages with 1-line description each)\n3. Response Standards (table format: situation → response time → owner)\n4. Escalation Rules (3 rules, each starting with \"If...\")\n5. The Override Principle (one sentence that governs every edge case)\nTone: Direct, specific, actionable — the tone of a founder who has made mistakes and learned from them\n</output_format>\n<output_rules>\n- Begin directly with the response. No \"Here is your email:\" preamble.\n- Never use: \"We apologize for the inconvenience\", \"valued customer\", \"at this time\", \"best-in-class\", \"world-class\"\n- Replace every adjective with: a concrete action, a timeline, or a specific offer\n- Acknowledge before solving — the formula: Validate → Explain → Resolve → Prevent\n- Output only the content — no meta-commentary\n</output_rules>\n<self_check>\n- [ ] The \"What CS Means Here\" section is specific to this business — not a generic mission statement\n- [ ] Response Standards are concrete time commitments (hours/days), not \"as soon as possible\"\n- [ ] The Override Principle is a single, memorable sentence that actually resolves ambiguity\nRewrite failing items before final output.\n</self_check>\n\nFILL IN BEFORE RUNNING:\n[BUSINESS_NAME] = e.g. \"Momentum by [Your Name]\"\n[BUSINESS_TYPE] = e.g. \"online coaching and digital products business\"\n[YOUR_NAME] = your first name\n[CORE_CUSTOMER_PROMISE] = e.g. \"customers achieve a specific result within a defined timeframe\"\n[TOP_3_CUSTOMER_TOUCHPOINTS] = e.g. \"onboarding email, 30-day check-in, renewal\"\n[ESCALATION_OWNER] = e.g. your name or a team member","sample":"\"When in doubt, ask yourself: would a customer who just referred us their best friend feel good about how we handled this? If the answer is no, fix it before closing the ticket — regardless of what the policy says.\""}
 ];
 
-// ═══════════════════════════════════════════════════════════════════
+
+// ─────────────────────────────────────────────────────────
 // CATEGORY CONFIG
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 const CATS = {
   marketing:  { label: 'Marketing & Content',   color: '#3B82F6', desc: 'LinkedIn posts, emails, ad copy, content calendars' },
   sales:      { label: 'Sales & Outreach',       color: '#10B981', desc: 'Cold emails, follow-ups, proposals, objection handling' },
@@ -819,16 +1026,116 @@ const CATS = {
   cs:         { label: 'Customer Success',       color: '#06B6D4', desc: 'Support responses, retention, upsells, apologies' },
 };
 
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 // STATE
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 let currentCat = 'all';
 let currentSearch = '';
 let expandedCards = new Set();
 
-// ═══════════════════════════════════════════════════════════════════
-// FILTER LOGIC
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
+// XML SYNTAX HIGHLIGHTING
+// ─────────────────────────────────────────────────────────
+function syntaxBody(raw) {
+  let s = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  // Color XML tags <tag> and </tag>
+  s = s.replace(/&lt;(\/?[\w_]+)&gt;/g,
+    '<span class="xml-tag">&lt;$1&gt;</span>');
+  // Highlight [VARIABLE_PLACEHOLDER] in amber
+  s = s.replace(/\[([A-Z][A-Z0-9_\s]{1,40})\]/g,
+    '<span class="xml-var">[$1]</span>');
+  return s;
+}
+
+// ─────────────────────────────────────────────────────────
+// SEARCH HIGHLIGHT
+// ─────────────────────────────────────────────────────────
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+// ─────────────────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────────────────
+function showToast(msg) {
+  const c = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = '<span class="toast-icon">&#10003;</span> ' + msg;
+  c.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 380);
+  }, 2100);
+}
+
+// ─────────────────────────────────────────────────────────
+// RIPPLE
+// ─────────────────────────────────────────────────────────
+function addRipple(btn, e) {
+  const rect = btn.getBoundingClientRect();
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const size = Math.max(rect.width, rect.height);
+  r.style.cssText = 'width:' + size + 'px;height:' + size + 'px;' +
+    'left:' + (e.clientX - rect.left - size/2) + 'px;' +
+    'top:'  + (e.clientY - rect.top  - size/2) + 'px';
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+
+// ─────────────────────────────────────────────────────────
+// ICONS
+// ─────────────────────────────────────────────────────────
+const ICON_COPY  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+const ICON_CHECK = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>';
+const ICON_CHEV  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>';
+const ICON_ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg>';
+
+// ─────────────────────────────────────────────────────────
+// RENDER CARD
+// ─────────────────────────────────────────────────────────
+function renderCard(p, q) {
+  const cfg    = CATS[p.cat];
+  const isOpen = expandedCards.has(p.id);
+  const titleHL  = highlight(p.title, q);
+  const forHL    = highlight(p.for, q);
+  const bodyHTML = syntaxBody(p.body);
+  const num      = String(p.id).padStart(3, '0');
+
+  return [
+    '<div class="prompt-card" data-cat="' + p.cat + '" data-id="' + p.id + '">',
+    '  <div class="card-top">',
+    '    <span class="card-badge" style="background:' + cfg.color + '1a;color:' + cfg.color + ';border:1px solid ' + cfg.color + '33">' + cfg.label + '</span>',
+    '    <span class="card-num">#' + num + '</span>',
+    '  </div>',
+    '  <div class="card-title">' + titleHL + '</div>',
+    '  <div class="card-for">' + forHL + '</div>',
+    '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
+    '  <div class="card-sample' + (isOpen ? ' open' : '') + '" id="sample-' + p.id + '">',
+    '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
+    '  </div>',
+    '  <div class="card-actions">',
+    '    <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + '">',
+    '      ' + ICON_COPY + ' Copy Prompt',
+    '    </button>',
+    '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand') + '">',
+    '      ' + ICON_CHEV,
+    '    </button>',
+    '  </div>',
+    '</div>'
+  ].join('\n');
+}
+
+// ─────────────────────────────────────────────────────────
+// FILTER
+// ─────────────────────────────────────────────────────────
 function filtered() {
   return PROMPTS.filter(p => {
     const matchCat = currentCat === 'all' || p.cat === currentCat;
@@ -836,122 +1143,76 @@ function filtered() {
     if (!currentSearch) return true;
     const q = currentSearch.toLowerCase();
     return p.title.toLowerCase().includes(q) ||
-           p.body.toLowerCase().includes(q) ||
+           p.body.toLowerCase().includes(q)  ||
            p.for.toLowerCase().includes(q);
   });
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════════════════════════
-function highlight(text, q) {
-  if (!q) return text;
-  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  return text.replace(re, '<mark>$1</mark>');
-}
-
-function renderCard(p, q) {
-  const cfg = CATS[p.cat];
-  const isOpen = expandedCards.has(p.id);
-  const titleHL = highlight(p.title, q);
-  const forHL   = highlight(p.for, q);
-  const bodyHL  = highlight(p.body, q);
-  return `
-<div class="prompt-card" data-cat="${p.cat}" data-id="${p.id}">
-  <div class="card-top">
-    <span class="card-badge" style="background:${cfg.color}22;color:${cfg.color};border:1px solid ${cfg.color}44">
-      ${cfg.label}
-    </span>
-    <span class="card-num">#${p.id}</span>
-  </div>
-  <div class="card-title">${titleHL}</div>
-  <div class="card-for">${forHL}</div>
-  <div class="card-body ${isOpen?'open':''}" id="body-${p.id}">${bodyHL}</div>
-  <div class="card-sample ${isOpen?'open':''}" id="sample-${p.id}">
-    <div class="sample-label">📤 Sample Output</div>
-    ${p.sample}
-  </div>
-  <div class="card-actions">
-    <button class="btn-copy" id="copy-${p.id}" onclick="copyPrompt(${p.id})">
-      <span>📋</span> Copy Prompt
-    </button>
-    <button class="btn-expand" id="expand-${p.id}" onclick="toggleExpand(${p.id})" title="${isOpen?'Collapse':'Expand'}">
-      ${isOpen ? '▲' : '▼'}
-    </button>
-  </div>
-</div>`;
-}
-
+// ─────────────────────────────────────────────────────────
+// RENDER ALL
+// ─────────────────────────────────────────────────────────
 function renderAll() {
-  const main = document.getElementById('main-content');
-  const q    = currentSearch.trim().toLowerCase();
-  const list = filtered();
+  const main  = document.getElementById('main-content');
+  const q     = currentSearch.trim().toLowerCase();
+  const list  = filtered();
   const empty = document.getElementById('empty-state');
   const info  = document.getElementById('results-info');
 
-  // update empty state
   empty.classList.toggle('show', list.length === 0);
+  info.textContent = (q || currentCat !== 'all')
+    ? list.length + ' prompt' + (list.length !== 1 ? 's' : '') + ' found'
+    : '';
 
-  // update results info
-  if (q || currentCat !== 'all') {
-    info.textContent = `${list.length} prompt${list.length !== 1 ? 's' : ''} found`;
-  } else {
-    info.textContent = '';
-  }
-
-  // group by category
   const sections = {};
-  list.forEach(p => {
-    if (!sections[p.cat]) sections[p.cat] = [];
-    sections[p.cat].push(p);
-  });
+  list.forEach(p => { (sections[p.cat] = sections[p.cat] || []).push(p); });
 
   const catOrder = ['marketing','sales','hr','operations','cs'];
   let html = '';
   catOrder.forEach(cat => {
     if (!sections[cat]) return;
     const cfg = CATS[cat];
-    const prompts = sections[cat];
-    html += `
-<section class="category-section" id="section-${cat}">
-  <div class="category-header">
-    <div class="cat-dot" style="background:${cfg.color}"></div>
-    <div>
-      <div class="cat-title">${cfg.label}</div>
-      <div class="cat-subtitle">${cfg.desc}</div>
-    </div>
-    <span class="cat-tag">${prompts.length} prompts</span>
-  </div>
-  <div class="prompt-grid">
-    ${prompts.map(p => renderCard(p, q)).join('')}
-  </div>
-</section>`;
+    const ps  = sections[cat];
+    html += [
+      '<section class="category-section" id="section-' + cat + '">',
+      '  <div class="category-header">',
+      '    <div class="cat-dot" style="background:' + cfg.color + '"></div>',
+      '    <div><div class="cat-title">' + cfg.label + '</div><div class="cat-subtitle">' + cfg.desc + '</div></div>',
+      '    <span class="cat-tag">' + ps.length + ' prompts</span>',
+      '  </div>',
+      '  <div class="prompt-grid">',
+      ps.map(p => renderCard(p, q)).join(''),
+      '  </div>',
+      '</section>'
+    ].join('\n');
   });
 
-  // replace only sections, keep empty-state and search
-  const existing = main.querySelector('.category-section');
-  // remove old sections
   main.querySelectorAll('.category-section').forEach(el => el.remove());
   main.insertAdjacentHTML('beforeend', html);
+
+  // Stagger card animations
+  const cards = main.querySelectorAll('.prompt-card');
+  cards.forEach((c, i) => {
+    c.style.animationDelay = Math.min(i * 28, 280) + 'ms';
+  });
 
   updateCounts(list);
 }
 
+// ─────────────────────────────────────────────────────────
+// UPDATE COUNTS
+// ─────────────────────────────────────────────────────────
 function updateCounts(list) {
-  const all = document.getElementById('count-all');
-  if (all) all.textContent = list.length;
+  const el = document.getElementById('count-all');
+  if (el) el.textContent = list.length;
   Object.keys(CATS).forEach(cat => {
-    const el = document.getElementById('count-' + cat);
-    if (el) {
-      const n = list.filter(p => p.cat === cat).length;
-      el.textContent = n;
-    }
+    const e = document.getElementById('count-' + cat);
+    if (e) e.textContent = list.filter(p => p.cat === cat).length;
   });
 }
 
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 // ACTIONS
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 function filterCat(btn) {
   currentCat = btn.dataset.cat;
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -960,69 +1221,106 @@ function filterCat(btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-let searchTimeout;
+let _searchTimer;
 function handleSearch(val) {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => {
     currentSearch = val;
     currentCat = 'all';
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     document.querySelector('[data-cat="all"]').classList.add('active');
     renderAll();
-  }, 180);
+  }, 160);
 }
 
 function toggleExpand(id) {
-  const body   = document.getElementById('body-' + id);
+  const body   = document.getElementById('body-'   + id);
   const sample = document.getElementById('sample-' + id);
   const btn    = document.getElementById('expand-' + id);
   if (expandedCards.has(id)) {
     expandedCards.delete(id);
     body.classList.remove('open');
     if (sample) sample.classList.remove('open');
-    btn.textContent = '▼';
+    btn.classList.remove('is-open');
+    btn.title = 'Expand';
   } else {
     expandedCards.add(id);
     body.classList.add('open');
     if (sample) sample.classList.add('open');
-    btn.textContent = '▲';
+    btn.classList.add('is-open');
+    btn.title = 'Collapse';
   }
 }
 
-function copyPrompt(id) {
+function copyPrompt(e, id) {
+  addRipple(e.currentTarget, e);
   const p = PROMPTS.find(x => x.id === id);
   if (!p) return;
-  navigator.clipboard.writeText(p.body).then(() => {
+
+  const done = () => {
     const btn = document.getElementById('copy-' + id);
+    if (!btn) return;
     btn.classList.add('copied');
-    btn.innerHTML = '<span>✓</span> Copied!';
+    btn.innerHTML = ICON_CHECK + ' Copied!';
+    showToast('Prompt copied to clipboard');
     setTimeout(() => {
       btn.classList.remove('copied');
-      btn.innerHTML = '<span>📋</span> Copy Prompt';
-    }, 2000);
-  }).catch(() => {
-    // fallback
-    const ta = document.createElement('textarea');
-    ta.value = p.body; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
-    const btn = document.getElementById('copy-' + id);
-    btn.classList.add('copied');
-    btn.innerHTML = '<span>✓</span> Copied!';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = '<span>📋</span> Copy Prompt';
-    }, 2000);
-  });
+      btn.innerHTML = ICON_COPY + ' Copy Prompt';
+    }, 2200);
+  };
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(p.body).then(done).catch(() => fallbackCopy(p.body, done));
+  } else {
+    fallbackCopy(p.body, done);
+  }
 }
 
-// ═══════════════════════════════════════════════════════════════════
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;top:-9999px;left:-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  cb();
+}
+
+// ─────────────────────────────────────────────────────────
+// KEYBOARD SHORTCUTS
+// ─────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    const s = document.getElementById('search');
+    s.focus(); s.select();
+  }
+  if (e.key === 'Escape' && document.activeElement.id === 'search') {
+    document.getElementById('search').blur();
+  }
+});
+
+// ─────────────────────────────────────────────────────────
+// SCROLL TO TOP
+// ─────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scroll-top');
+  if (btn) btn.classList.toggle('visible', window.scrollY > 450);
+}, { passive: true });
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────────────────
 // INIT
-// ═══════════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('total-count').textContent = PROMPTS.length;
   renderAll();
 });
+
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -1030,5 +1328,9 @@ document.addEventListener('DOMContentLoaded', () => {
 ═══════════════════════════════════════════════════════════════ -->
 
 
+<div id="toast-container" class="toast-container"></div>
+<button id="scroll-top" class="scroll-top" onclick="scrollToTop()" title="Back to top">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
+</button>
 </body>
 </html>
