@@ -98,6 +98,87 @@
     50%      { transform: translateX(-55%) translateY(-18px); }
   }
 
+  /* ── PREMIUM ANIMATIONS ── */
+  @keyframes cardGlowIn {
+    from { box-shadow: 0 0 0 rgba(59,130,246,0); }
+    to   { box-shadow: 0 0 28px rgba(59,130,246,.12), 0 8px 32px rgba(0,0,0,.35); }
+  }
+  @keyframes shimmerSlide {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes expandPop {
+    0%   { transform: scaleY(0.96); opacity: 0; }
+    100% { transform: scaleY(1);    opacity: 1; }
+  }
+  @keyframes floatOrb {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%     { transform: translateY(-24px) scale(1.04); }
+  }
+
+  /* Card glow when open */
+  .prompt-card:has(.card-body.open) {
+    border-left-color: var(--accent, #3B82F6);
+    border-color: var(--border-hi);
+    animation: cardGlowIn 0.4s var(--ease-out) forwards;
+    background: var(--surface2);
+  }
+
+  /* Body expand animation */
+  .card-body.open {
+    animation: expandPop 0.28s var(--ease-out) both !important;
+  }
+
+  /* Shimmer on copy button after copied */
+  .btn-copy.copied::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.18) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmerSlide 0.7s ease-in-out;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Stagger card entrance */
+  .prompt-card:nth-child(1)  { animation-delay: 0.03s; }
+  .prompt-card:nth-child(2)  { animation-delay: 0.06s; }
+  .prompt-card:nth-child(3)  { animation-delay: 0.09s; }
+  .prompt-card:nth-child(4)  { animation-delay: 0.12s; }
+  .prompt-card:nth-child(5)  { animation-delay: 0.15s; }
+  .prompt-card:nth-child(6)  { animation-delay: 0.18s; }
+  .prompt-card:nth-child(n+7){ animation-delay: 0.20s; }
+
+  /* Floating ambient orbs in background (subtle) */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(90px);
+    opacity: 0.045;
+  }
+  body::before {
+    width: 600px; height: 600px;
+    top: 20vh; right: -150px;
+    background: radial-gradient(circle, #3B82F6, transparent 70%);
+    animation: floatOrb 12s ease-in-out infinite;
+  }
+  body::after {
+    width: 500px; height: 500px;
+    bottom: 10vh; left: -100px;
+    background: radial-gradient(circle, #8B5CF6, transparent 70%);
+    animation: floatOrb 15s ease-in-out infinite reverse;
+  }
+
+  /* Smooth nav active transition */
+  .cat-btn {
+    transition: background 250ms var(--ease-ui), color 200ms, border-color 200ms, transform 150ms, box-shadow 200ms !important;
+  }
+  .cat-btn.active { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.3); }
+
   .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -219,25 +300,34 @@
 
   .nav-inner::-webkit-scrollbar { display: none; }
 
+  /* Guide button — floating fixed */
   .guide-btn {
+    position: fixed;
+    bottom: 28px;
+    left: 24px;
+    z-index: 900;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border-hi);
+    background: var(--surface2);
     color: var(--text-muted);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
-    flex-shrink: 0;
-    transition: border-color 0.18s, color 0.18s;
-  
-    min-height: 44px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.45);
+    transition: border-color 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
+    backdrop-filter: blur(8px);
   }
-  .guide-btn:hover { border-color: var(--border-hi); color: var(--text); }
+  .guide-btn:hover {
+    border-color: #3B82F6;
+    color: var(--text);
+    box-shadow: 0 6px 28px rgba(59,130,246,.25);
+    transform: translateY(-2px);
+  }
 
   .cat-btn {
     display: inline-flex;
@@ -1638,11 +1728,6 @@ function renderCard(p, q) {
     '  </div>',
     '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + (NEW_IDS.has(p.id) ? '<span class="new-badge">NEW</span>' : '') + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
-    '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
-    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">&#128161; Leave the <code>&lt;tags&gt;</code> in — they\'re the reason this doesn\'t sound like generic AI.</div>',
-    '  <div class="card-sample" id="sample-' + p.id + '">',
-    '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
-    '  </div>',
     '  <div class="card-actions">',
     '    <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + '">',
     '      ' + ICON_COPY + ' Copy Prompt',
@@ -1651,6 +1736,11 @@ function renderCard(p, q) {
     '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand prompt') + '" aria-label="' + (isOpen ? 'Collapse prompt' : 'Expand prompt') + '" style="width:auto;padding:8px 10px;gap:4px;font-size:12px">',
     '      ' + ICON_CHEV + (isOpen ? ' <span style="font-size:11px;color:var(--text-dim)">Hide</span>' : ' <span style="font-size:11px;color:var(--text-dim)">View</span>'),
     '    </button>',
+    '  </div>',
+    '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
+    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">&#128161; Leave the <code>&lt;tags&gt;</code> in — they\'re the reason this doesn\'t sound like generic AI.</div>',
+    '  <div class="card-sample" id="sample-' + p.id + '">',
+    '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
     '  </div>',
     '</div>'
   ].join('\n');
