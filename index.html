@@ -1109,10 +1109,80 @@
   .card-xml-note.show { display: block; }
   .card-xml-note code { color: #79C0FF; font-size: 11px; }
 
+  /* ── ACCESS GATE ── */
+  .access-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .gate-card {
+    max-width: 440px; width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 44px 40px 36px;
+    text-align: center;
+  }
+  .gate-emoji { font-size: 48px; margin-bottom: 12px; }
+  .gate-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .gate-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.5; }
+  .gate-input {
+    width: 100%; padding: 13px 16px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 15px;
+    margin-bottom: 12px; outline: none; transition: border-color .18s;
+    font-family: inherit;
+  }
+  .gate-input:focus { border-color: #3B82F6; }
+  .gate-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #3B82F6, #6366F1);
+    border: none; border-radius: 10px;
+    color: #fff; font-size: 15px; font-weight: 600;
+    cursor: pointer; margin-top: 4px;
+    transition: opacity .18s, transform .12s;
+  }
+  .gate-btn:hover { opacity: .92; transform: translateY(-1px); }
+  .gate-btn:active { transform: scale(.98); }
+  .gate-error {
+    color: #F87171; font-size: 13px;
+    margin-top: 10px; min-height: 18px;
+  }
+  .gate-hint {
+    font-size: 12px; color: var(--text-dim);
+    margin-top: 20px; line-height: 1.5;
+  }
+  .gate-hint strong { color: var(--text-muted); }
+
+  /* ── NEW badge ── */
+  .new-badge {
+    display: inline-flex; align-items: center;
+    background: rgba(16,185,129,.15); color: #10B981;
+    border: 1px solid rgba(16,185,129,.3);
+    border-radius: 4px; font-size: 10px; font-weight: 600;
+    padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+    letter-spacing: .03em;
+  }
 
 </style>
 </head>
 <body>
+
+<!-- ── ACCESS GATE ── -->
+<div class="access-gate" id="access-gate">
+  <div class="gate-card">
+    <div class="gate-emoji">🎉</div>
+    <div class="gate-title">Your prompts are ready.</div>
+    <div class="gate-sub">Enter your email and the access code from your PDF to unlock 240 prompts.</div>
+    <input class="gate-input" type="email" id="gate-email" placeholder="Your email address" autocomplete="email" />
+    <input class="gate-input" type="text" id="gate-code" placeholder="Access code (from your PDF)" autocomplete="off" style="text-transform:uppercase;letter-spacing:.08em" />
+    <button class="gate-btn" onclick="unlockApp()">Unlock My Prompts →</button>
+    <div class="gate-error" id="gate-error"></div>
+    <div class="gate-hint">Find your access code inside the PDF you received after purchase.<br><strong>Purchased on Etsy or Gumroad?</strong> Check your download file.</div>
+  </div>
+</div>
+
 <a href="#main-content" class="sr-only">Skip to content</a>
 
 <!-- ── HERO ── -->
@@ -1401,6 +1471,36 @@ let savedSet = new Set(JSON.parse(localStorage.getItem('saved-prompts') || '[]')
 const HOT_IDS = new Set([1, 3, 5, 51, 52, 55, 101, 102, 141, 143, 181, 183, 184]);
 // Daily 15 — most impactful for daily business use (VOC-backed)
 const DAILY_IDS = new Set([1, 4, 5, 11, 51, 52, 86, 91, 97, 101, 108, 141, 181, 183, 184]);
+// New this month — latest additions
+const NEW_IDS = new Set([160, 161, 162, 163, 164, 165, 181, 182, 183, 184, 220, 221, 222, 223, 224]);
+
+// ── ACCESS GATE ──
+const ACCESS_CODE = 'BIZ240';
+function checkAccess() {
+  if (localStorage.getItem('pp-access') === '1') {
+    document.getElementById('access-gate').style.display = 'none';
+  }
+}
+function unlockApp() {
+  const email = document.getElementById('gate-email').value.trim();
+  const code  = document.getElementById('gate-code').value.trim().toUpperCase();
+  const err   = document.getElementById('gate-error');
+  err.textContent = '';
+  if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
+  if (code !== ACCESS_CODE) { err.textContent = 'Incorrect access code. Check your PDF — it\'s on page 1.'; return; }
+  localStorage.setItem('pp-access', '1');
+  localStorage.setItem('pp-email', email);
+  document.getElementById('access-gate').style.display = 'none';
+  // Notify (fire & forget — silent if offline)
+  fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer re_Rt42EVY7_GgffGAUr4HoqFGcVwjKruggD', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: 'onboarding@resend.dev', to: 'weinberg.tom@gmail.com', subject: '🎉 New prompt pack unlock: ' + email, html: '<p>Email: <strong>' + email + '</strong></p><p>Code: ' + code + '</p><p>Time: ' + new Date().toISOString() + '</p>' })
+  }).catch(function(){});
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('access-gate').style.display !== 'none') unlockApp();
+});
 const CAT_TIME = {
   marketing:  { label: '📣 Marketing & Content',  time: '~5 hrs/week', desc: 'content, emails, ads, social' },
   sales:      { label: '💼 Sales & Outreach',     time: '~4 hrs/week', desc: 'cold emails, proposals, follow-ups' },
@@ -1531,7 +1631,7 @@ function renderCard(p, q) {
     '    <span class="card-badge" style="background:' + cfg.color + '1a;color:' + cfg.color + ';border:1px solid ' + cfg.color + '33">' + cfg.label + '</span>',
     '    <span class="card-num">#' + num + '</span>',
     '  </div>',
-    '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + '</div>',
+    '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + (NEW_IDS.has(p.id) ? '<span class="new-badge">NEW</span>' : '') + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
     '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
     '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">&#128161; Leave the <code>&lt;tags&gt;</code> in — they\'re the reason this doesn\'t sound like generic AI.</div>',
@@ -1848,6 +1948,7 @@ function scrollToTop() {
 // INIT
 // ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
+  checkAccess();
   document.getElementById('total-count').textContent = PROMPTS.length;
   updateSavedCount();
   renderAll();
