@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business AI Prompt Pack — 240 Prompts for Business Owners</title>
+<title>Your Business AI Prompt Pack — Start Here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  /* Inter loaded via <link> in <head> for performance */
 
   /* ── RESET & BASE ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,7 +22,7 @@
     --border-hi:   #3D444D;
     --text:        #E6EDF3;
     --text-muted:  #7D8590;
-    --text-dim:    #484F58;
+    --text-dim:    #6E7681;
 
     --c-marketing: #3B82F6;
     --c-sales:     #10B981;
@@ -34,6 +37,21 @@
   }
 
   html { scroll-behavior: smooth; }
+
+  /* ── GLOBAL ACCESSIBILITY & TOUCH ── */
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+  }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-glow-a, .hero-glow-b { animation: none; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
 
   body {
     background: var(--bg);
@@ -216,6 +234,8 @@
     white-space: nowrap;
     flex-shrink: 0;
     transition: border-color 0.18s, color 0.18s;
+  
+    min-height: 44px;
   }
   .guide-btn:hover { border-color: var(--border-hi); color: var(--text); }
 
@@ -472,6 +492,10 @@
     font-size: 12px;
     color: var(--text-muted);
     line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* ── PROMPT BODY ── */
@@ -588,8 +612,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
     background: transparent;
@@ -748,6 +772,7 @@
     .cat-time-bar { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
     .cat-time-bar::-webkit-scrollbar { display: none; }
     .copy-counter { right: 12px; left: auto; bottom: 16px; }
+    .btn-copy { min-height: 44px; }
     .quickstart-bar { font-size: 12px; padding: 8px 16px; }
     .quickstart-bar .qs-step { font-size: 11px; padding: 2px 6px; }
     .quickstart-arrow { display: none; }
@@ -816,6 +841,7 @@
     border-color: transparent;
     font-weight: 600;
     background: var(--pill-color, #3B82F6);
+    box-shadow: 0 0 14px rgba(59, 130, 246, 0.4);
     box-shadow: 0 0 14px color-mix(in srgb, var(--pill-color, #3B82F6) 40%, transparent);
   }
   .subcat-pill .pill-count {
@@ -1035,7 +1061,9 @@
   .smart-toast-close {
     background: none; border: none; cursor: pointer;
     color: var(--text-dim); font-size: 16px; line-height: 1;
-    padding: 0 0 0 8px; flex-shrink: 0;
+    min-width: 44px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; flex-shrink: 0;
   }
   .smart-toast-close:hover { color: var(--text-muted); }
   .smart-toast .toast-vars {
@@ -1084,6 +1112,7 @@
 </style>
 </head>
 <body>
+<a href="#main-content" class="sr-only">Skip to content</a>
 
 <!-- ── HERO ── -->
 <section class="hero">
@@ -1091,24 +1120,24 @@
   <div class="hero-glow-b"></div>
   <div class="hero-badge">
     <span class="hero-badge-dot"></span>
-    240 Expert-Level AI Prompts · PLR Included
+    240 Prompts That Sound Like You, Not Like AI · PLR Included
   </div>
-  <h1>The Business AI Prompt Pack</h1>
-  <p class="hero-sub">Stop getting AI responses that sound like a robot wrote them. Each prompt took <strong style="color:#E6EDF3">45+ minutes to engineer</strong> — you get all 240 in seconds. Browse by category, click <strong style="color:#E6EDF3">Copy</strong>, fill the <span style="color:#FFA657;font-weight:600">[BRACKETS]</span>, and get results that sound like <em>you</em>.</p>
+  <h1>Stop Getting Generic AI Results.</h1>
+  <p class="hero-sub">You just got 240 prompts that sound like <em>you</em> — not a robot. Pick a category below, hit <strong style="color:#E6EDF3">Copy</strong>, fill the <span style="color:#FFA657;font-weight:600">[BRACKETS]</span> with your info, paste into ChatGPT. Most people save their first hour of work within 20 minutes.</p>
   <div class="stats-row">
     <div class="stat">
       <div class="stat-num" id="total-count">240</div>
-      <div class="stat-label">Prompts</div>
+      <div class="stat-label">Ready-to-Use Prompts</div>
     </div>
     <div class="stat-divider"></div>
     <div class="stat">
       <div class="stat-num">5</div>
-      <div class="stat-label">Categories</div>
+      <div class="stat-label">Business Areas Covered</div>
     </div>
     <div class="stat-divider"></div>
     <div class="stat">
       <div class="stat-num" title="Role · Instructions · Steps · End Goal · Narrowing — the 5-layer structure used in every prompt" style="cursor:help">RISEN</div>
-      <div class="stat-label" title="Role · Instructions · Steps · End Goal · Narrowing">Framework Built-In</div>
+      <div class="stat-label" title="Role · Instructions · Steps · End Goal · Narrowing">Pre-Engineered for Real Results</div>
     </div>
     <div class="stat-divider"></div>
     <div class="stat">
@@ -1117,12 +1146,12 @@
     </div>
   </div>
   <div style="margin-top:16px;font-size:12px;color:var(--text-dim);background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:8px;padding:8px 14px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center">
-    <span><strong style="color:#79C0FF">R</strong>ole &amp; expertise</span><span>·</span>
-    <span><strong style="color:#79C0FF">I</strong>nstructions</span><span>·</span>
-    <span><strong style="color:#79C0FF">S</strong>teps to think through</span><span>·</span>
-    <span><strong style="color:#79C0FF">E</strong>nd goal &amp; output format</span><span>·</span>
-    <span><strong style="color:#79C0FF">N</strong>arrowing rules</span>
-    <span style="color:var(--text-muted);margin-left:4px">= results that sound like you, not like AI</span>
+    <span><strong style="color:#79C0FF">R</strong>ole assigned</span><span>·</span>
+    <span><strong style="color:#79C0FF">I</strong>nstructions precise</span><span>·</span>
+    <span><strong style="color:#79C0FF">S</strong>teps mapped</span><span>·</span>
+    <span><strong style="color:#79C0FF">E</strong>nd result defined</span><span>·</span>
+    <span><strong style="color:#79C0FF">N</strong>o generic fluff</span>
+    <span style="color:var(--text-muted);margin-left:6px">→ the reason this doesn't sound like AI</span>
   </div>
   <div class="ai-strip">
     <span class="ai-strip-label">Works with</span>
@@ -1179,7 +1208,7 @@
 </section>
 
 <!-- ── STICKY NAV ── -->
-<nav class="sticky-nav">
+<nav class="sticky-nav" aria-label="Prompt categories">
   <div class="nav-inner">
     <button class="cat-btn active" data-cat="all" onclick="filterCat(this)">
       All <span class="cat-count" id="count-all">240</span>
@@ -1191,13 +1220,13 @@
       💼 Sales &amp; Outreach <span class="cat-count" id="count-sales">50</span>
     </button>
     <button class="cat-btn" data-cat="hr" onclick="filterCat(this)">
-      👥 HR &amp; Team <span class="cat-count" id="count-hr">40</span>
+      👥 Hiring &amp; Team <span class="cat-count" id="count-hr">40</span>
     </button>
     <button class="cat-btn" data-cat="operations" onclick="filterCat(this)">
       ⚙️ Operations <span class="cat-count" id="count-operations">60</span>
     </button>
     <button class="cat-btn" data-cat="cs" onclick="filterCat(this)">
-      💬 Customer Success <span class="cat-count" id="count-cs">40</span>
+      💬 Client Responses <span class="cat-count" id="count-cs">40</span>
     </button>
     <button class="cat-btn" data-cat="daily" onclick="filterCat(this)">
       ⚡ Daily 15
@@ -1214,15 +1243,15 @@
 
 <!-- ── QUICKSTART BAR ── -->
 <div class="quickstart-bar">
-  <strong>New here?</strong>
-  <span class="qs-step">① Pick a category</span>
+  <strong>First prompt in 60 seconds:</strong>
+  <span class="qs-step">Pick a category</span>
   <span class="quickstart-arrow">→</span>
-  <span class="qs-step">② Click <strong>Copy Prompt</strong></span>
+  <span class="qs-step">Copy</span>
   <span class="quickstart-arrow">→</span>
-  <span class="qs-step">③ Fill the <span style="color:#FFA657;font-weight:700">[BRACKETS]</span> with your info</span>
+  <span class="qs-step">Fill <span style="color:#FFA657;font-weight:700">[BRACKETS]</span> (company, role, topic)</span>
   <span class="quickstart-arrow">→</span>
-  <span class="qs-step">④ Paste into ChatGPT / Claude</span>
-  <span style="margin-left:auto;color:#3B82F6;font-size:12px;white-space:nowrap">⚡ Start: <button onclick="filterCatById('daily')" style="background:none;border:none;color:#3B82F6;cursor:pointer;font-size:12px;text-decoration:underline;padding:0">Daily 15</button></span>
+  <span class="qs-step">Paste → Done</span>
+  <span style="margin-left:auto;color:#fff;font-size:12px;white-space:nowrap">⚡ Best place to start: <button onclick="filterCatById('daily')" class="quickstart-daily-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;text-decoration:none;min-height:36px">Daily 15</button></span>
 </div>
 
 <!-- ── CAT TIME BAR ── -->
@@ -1230,14 +1259,15 @@
 
 <!-- ── DAILY 15 BANNER ── -->
 <div id="daily-banner" style="display:none;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(239,68,68,.08));border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:14px 20px;margin:12px 24px 0;font-size:13.5px;color:var(--text-muted);line-height:1.6">
-  <strong style="color:var(--text);font-size:15px">⚡ Your Daily 15</strong><br>
-  The 15 prompts business owners use <em>every single day</em> — curated from all 240 in this pack based on real-world usage data. Start here, then explore the full library.
+  <strong style="color:var(--text);font-size:15px">⚡ Start Here — First Win in Under 5 Minutes</strong><br>
+  These 15 prompts are the ones business owners copy on repeat — because they solve the problems that actually cost money: content that gets ignored, emails that don&#39;t convert, tasks that eat 3 hours. Pick one, paste it, see why people say <em>&#34;I can&#39;t work without this.&#34;</em>
 </div>
 
 <!-- ── SEARCH ── -->
 <div class="search-wrap">
   <div class="search-box">
     <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+    <label for="search" class="sr-only">Search prompts</label>
     <input class="search-input" type="search" id="search" placeholder="Search prompts… e.g. cold email, SOP, onboarding" oninput="handleSearch(this.value)">
     <div class="search-shortcut">
       <span class="kbd">&#8984;</span><span class="kbd">K</span>
@@ -1265,10 +1295,11 @@
   <div class="footer-logo">Business AI Prompt Pack</div>
   <p>240 expert-level prompts · PLR license included · Works with ChatGPT, Claude, Gemini &amp; more</p>
   <p style="margin-top:14px;font-size:12.5px;color:var(--text-muted);line-height:1.7">
-    <strong style="color:#10B981">PLR — What's allowed:</strong> Rebrand, resell, bundle in courses, sell to clients as your own.<br>
-    <span style="color:var(--text-dim)">What's <em>not</em> allowed: Selling the raw pack as-is without modification on the same platforms (Etsy/Gumroad).</span>
+    <strong style="color:#10B981">✅ Bonus: Full Resell Rights Included (PLR)</strong><br>
+    This pack is yours to use AND sell. Rebrand it, bundle in a course, sell to clients, make it part of your own product — no credit needed.<br>
+    <span style="color:var(--text-dim)">The only limit: don't upload the raw, unmodified file to Etsy/Gumroad.</span>
   </p>
-  <p style="margin-top:10px;font-size:12px;color:var(--text-dim)">🛡️ Not satisfied? Contact us within 30 days for a full refund — no questions asked.</p>
+  <p style="margin-top:10px;font-size:12px;color:var(--text-dim)">🛡️ 30-Day Guarantee: If you use this and it doesn't save you time, email us. Full refund, zero friction.</p>
   <p style="margin-top:8px;font-size:12px;color:var(--text-dim)">© 2026 · Business AI Prompt Pack</p>
 </footer>
 
@@ -1285,9 +1316,9 @@ const PROMPTS = [{"id":1,"cat":"marketing","title":"Write LinkedIn Post — Foun
 const CATS = {
   marketing:  { label: 'Marketing & Content',   color: '#3B82F6', desc: 'LinkedIn posts, emails, ad copy, content calendars' },
   sales:      { label: 'Sales & Outreach',       color: '#10B981', desc: 'Cold emails, follow-ups, proposals, objection handling' },
-  hr:         { label: 'HR & Team',              color: '#8B5CF6', desc: 'Job descriptions, reviews, onboarding, terminations' },
+  hr:         { label: 'Hiring & Team',           color: '#8B5CF6', desc: 'Job descriptions, reviews, onboarding, terminations' },
   operations: { label: 'Operations & Strategy',  color: '#F59E0B', desc: 'SOPs, reports, planning, process improvement' },
-  cs:         { label: 'Customer Success',       color: '#06B6D4', desc: 'Support responses, retention, upsells, apologies' },
+  cs:         { label: 'Client Responses',       color: '#06B6D4', desc: 'Support responses, retention, upsells, apologies' },
 };
 
 // ─────────────────────────────────────────────────────────
@@ -1372,11 +1403,11 @@ const DAILY_IDS = new Set([1, 4, 5, 11, 51, 52, 86, 91, 97, 101, 108, 141, 181, 
 const CAT_TIME = {
   marketing:  { label: '📣 Marketing & Content',  time: '~5 hrs/week', desc: 'content, emails, ads, social' },
   sales:      { label: '💼 Sales & Outreach',     time: '~4 hrs/week', desc: 'cold emails, proposals, follow-ups' },
-  hr:         { label: '👥 HR & Team',            time: '~3 hrs/week', desc: 'job posts, reviews, onboarding' },
+  hr:         { label: '👥 Hiring & Team',            time: '~3 hrs/week', desc: 'job posts, reviews, onboarding' },
   operations: { label: '⚙️ Operations',           time: '~3 hrs/week', desc: 'SOPs, reports, project briefs' },
-  cs:         { label: '💬 Customer Success',     time: '~2 hrs/week', desc: 'responses, upsells, retention' },
+  cs:         { label: '💬 Client Responses',     time: '~2 hrs/week', desc: 'responses, upsells, retention' },
 };
-let copiedCount = parseInt(localStorage.getItem('copied-count') || '0');
+let copiedCount = parseInt(sessionStorage.getItem('copied-count') || '0');
 
 function isSaved(id) { return savedSet.has(id); }
 function toggleSave(id) {
@@ -1393,7 +1424,7 @@ function updateSavedCount() {
 }
 function incrementCopied(body) {
   copiedCount++;
-  localStorage.setItem('copied-count', copiedCount);
+  sessionStorage.setItem('copied-count', copiedCount);
   const el = document.getElementById('copy-num');
   const ctr = document.getElementById('copy-counter');
   if (el) el.textContent = copiedCount;
@@ -1404,8 +1435,13 @@ function incrementCopied(body) {
     const vars = [...new Set((body.match(/\[([A-Z][A-Z0-9_\s]+)\]/g) || []))].slice(0, 6);
     const toast = document.getElementById('smart-toast');
     const varsEl = document.getElementById('toast-vars');
-    if (toast && varsEl && vars.length > 0) {
-      varsEl.innerHTML = vars.map(function(v) { return '<span class="toast-var">' + v + '</span>'; }).join('');
+    if (toast && varsEl) {
+      if (vars.length > 0) {
+        varsEl.innerHTML = vars.map(function(v) { return '<span class="toast-var">' + v + '</span>'; }).join('');
+        varsEl.style.display = 'flex';
+      } else {
+        varsEl.style.display = 'none';
+      }
       toast.classList.add('show');
       clearTimeout(toast._t); // no auto-dismiss — user closes manually
     }
@@ -1494,10 +1530,10 @@ function renderCard(p, q) {
     '    <span class="card-badge" style="background:' + cfg.color + '1a;color:' + cfg.color + ';border:1px solid ' + cfg.color + '33">' + cfg.label + '</span>',
     '    <span class="card-num">#' + num + '</span>',
     '  </div>',
-    '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + '</div>',
+    '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
     '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
-    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">💡 Keep the <code>&lt;tags&gt;</code> when pasting — they guide the AI to produce better output.</div>',
+    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">💡 Leave the <code>&lt;tags&gt;</code> in — they're the reason this doesn't sound like generic AI.</div>',
     '  <div class="card-sample" id="sample-' + p.id + '">',
     '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
     '  </div>',
@@ -1505,9 +1541,9 @@ function renderCard(p, q) {
     '    <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + '">',
     '      ' + ICON_COPY + ' Copy Prompt',
     '    </button>',
-    '    <button class="btn-save' + (isSaved(p.id) ? ' saved' : '') + '" id="save-' + p.id + '" onclick="toggleSave(' + p.id + ')" title="Save to favorites">⭐</button>',
-    '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand') + '">',
-    '      ' + ICON_CHEV,
+    '    <button class="btn-save' + (isSaved(p.id) ? ' saved' : '') + '" id="save-' + p.id + '" onclick="toggleSave(' + p.id + ')" title="Save to favorites" aria-label="' + (isSaved(p.id) ? 'Remove from saved' : 'Save to favorites') + '">⭐</button>',
+    '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand prompt') + '" aria-label="' + (isOpen ? 'Collapse prompt' : 'Expand prompt') + '" style="width:auto;padding:8px 10px;gap:4px;font-size:12px">',
+    '      ' + ICON_CHEV + (isOpen ? ' <span style="font-size:11px;color:var(--text-dim)">Hide</span>' : ' <span style="font-size:11px;color:var(--text-dim)">View</span>'),
     '    </button>',
     '  </div>',
     '</div>'
@@ -1549,6 +1585,8 @@ function renderAll() {
   if (list.length === 0) {
     const isSaved = currentCat === 'saved';
     document.getElementById('empty-icon').textContent = isSaved ? '⭐' : '🔍';
+    const chips = document.getElementById('empty-chips');
+    if (chips) chips.style.display = isSaved ? 'none' : 'flex';
     document.getElementById('empty-title').textContent = isSaved ? 'No saved prompts yet' : 'No prompts found';
     document.getElementById('empty-msg').textContent   = isSaved ? 'Click ⭐ on any prompt to save it here for quick access.' : 'Try a different search term or browse all categories.';
   }
@@ -1578,7 +1616,17 @@ function renderAll() {
       '    <span class="cat-tag">' + ps.length + ' prompts</span>',
       '  </div>',
       '  <div class="prompt-grid">',
-      ps.map(p => renderCard(p, q)).join(''),
+      ps.map(p => renderCard(p, q)).join('') +
+        (currentCat !== 'all' && currentCat !== 'daily' && currentCat !== 'saved' && !currentSearch
+          ? '<div class="cat-end-marker">✓ All ' + ps.length + ' prompts shown' +
+            (function() {
+              var cats = Object.keys(CATS);
+              var idx = cats.indexOf(currentCat);
+              var next = cats[(idx + 1) % cats.length];
+              return ' — <button onclick="filterCatById(\'' + next + '\')">Browse ' + CATS[next].label + ' →</button>';
+            })()
+            + '</div>'
+          : ''),
       '  </div>',
       '</section>',
     ].join('\n');
@@ -1632,8 +1680,9 @@ function renderCatTimeBar() {
 function filterCat(btn) {
   currentCat = btn.dataset.cat;
   activeSubcat = 'all';
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed', 'true');
   renderSubcatNav();
   renderCatTimeBar();
   renderAll();
@@ -1750,7 +1799,7 @@ function copyPrompt(e, id) {
     if (!btn) return;
     btn.classList.add('copied');
     btn.innerHTML = ICON_CHECK + ' Copied!';
-    showToast('Prompt copied to clipboard');
+    showToast('Copied — now fill the [BRACKETS] with your info');
     setTimeout(() => {
       btn.classList.remove('copied');
       btn.innerHTML = ICON_COPY + ' Copy Prompt';
@@ -1818,18 +1867,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div id="toast-container" class="toast-container"></div>
 <!-- ── COPY COUNTER ── -->
-<div class="copy-counter" id="copy-counter"><strong id="copy-num">0</strong> copied this session</div>
+<div class="copy-counter" id="copy-counter"><strong id="copy-num">0</strong> prompts used today — keep going</div>
 
 <div class="smart-toast" id="smart-toast">
   <div class="smart-toast-header">
-    <div class="toast-title">Fill in the brackets:</div>
-    <button class="smart-toast-close" onclick="closeSmartToast()" title="Close">×</button>
+    <div class="toast-title">Personalize — replace:</div>
+    <button class="smart-toast-close" onclick="closeSmartToast()" title="Close" aria-label="Close">×</button>
   </div>
   <div class="toast-vars" id="toast-vars"></div>
-  <div class="toast-xml-note">Keep the <code>&lt;tags&gt;</code> when pasting — they improve AI output.</div>
+  <div class="toast-xml-note">Leave the <code>&lt;tags&gt;</code> in — they tell the AI exactly how to structure the response.</div>
 </div>
 
-<button class="scroll-top" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+<button class="scroll-top" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top" aria-label="Back to top">↑</button>
 
 </body>
 </html>
