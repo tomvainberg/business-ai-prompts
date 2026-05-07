@@ -74,7 +74,7 @@
     overflow: hidden;
   }
 
-  .hero-glow-a, .hero-glow-b {
+  .hero-glow-a, .hero-glow-b, .hero-glow-c {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
@@ -84,18 +84,97 @@
   .hero-glow-a {
     width: 700px; height: 500px;
     top: -200px; left: 50%; transform: translateX(-55%);
-    background: radial-gradient(ellipse, rgba(59,130,246,.14) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(59,130,246,.18) 0%, transparent 70%);
   }
   .hero-glow-b {
     width: 400px; height: 400px;
     top: -100px; right: -80px;
-    background: radial-gradient(ellipse, rgba(139,92,246,.10) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(139,92,246,.12) 0%, transparent 70%);
     animation-delay: -4.5s;
+  }
+  .hero-glow-c {
+    width: 300px; height: 300px;
+    bottom: -60px; left: 5%;
+    background: radial-gradient(ellipse, rgba(16,185,129,.08) 0%, transparent 70%);
+    animation-delay: -7s; animation-duration: 11s;
+  }
+
+  /* Animated grid background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* Animated gradient word */
+  .hero-gradient-word {
+    background: linear-gradient(135deg, #60A5FA, #A78BFA, #34D399, #60A5FA);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Word-by-word fade in for hero subtitle */
+  .hero-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: wordFadeUp 0.5s var(--ease-out) forwards;
+  }
+
+  @keyframes wordFadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stat counter glow */
+  .stat-num {
+    position: relative;
+  }
+  .stat-num::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 8px;
+    background: var(--stat-glow, rgba(59,130,246,.12));
+    filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .stat-num:hover::after { opacity: 1; }
+
+  /* Floating particles in hero */
+  .hero-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFloat linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes particleFloat {
+    0%   { transform: translateY(0) scale(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
   }
 
   @keyframes blobFloat {
     0%,100% { transform: translateX(-55%) translateY(0); }
-    50%      { transform: translateX(-55%) translateY(-18px); }
+    50%      { transform: translateX(-55%) translateY(-22px); }
   }
 
   /* ── PREMIUM ANIMATIONS ── */
@@ -300,33 +379,33 @@
 
   .nav-inner::-webkit-scrollbar { display: none; }
 
-  /* Guide button — floating fixed */
+  /* Guide button — inline in nav */
   .guide-btn {
-    position: fixed;
-    bottom: 28px;
-    left: 24px;
-    z-index: 900;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 10px 16px;
-    border-radius: 99px;
-    border: 1px solid var(--border-hi);
-    background: var(--surface2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
     color: var(--text-muted);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
-    box-shadow: 0 4px 20px rgba(0,0,0,.45);
-    transition: border-color 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
-    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+    min-height: 44px;
+    transition: border-color 0.18s, color 0.18s;
   }
-  .guide-btn:hover {
-    border-color: #3B82F6;
-    color: var(--text);
-    box-shadow: 0 6px 28px rgba(59,130,246,.25);
-    transform: translateY(-2px);
+  .guide-btn:hover { border-color: var(--border-hi); color: var(--text); }
+
+  /* Guide row — separate row below nav */
+  .guide-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 16px 0;
+    background: var(--nav-bg, #161B22);
+    border-bottom: 1px solid var(--border);
   }
 
   .cat-btn {
@@ -459,7 +538,7 @@
 
   /* ── CATEGORY SECTION ── */
   .category-section {
-    margin-bottom: 60px;
+    margin-bottom: 24px;
     animation: fadeUp 0.45s var(--ease-out) both;
   }
 
@@ -546,9 +625,16 @@
 
   .card-top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 10px;
+  }
+
+  .card-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
   }
 
   .card-badge {
@@ -1272,11 +1358,12 @@
 <section class="hero">
   <div class="hero-glow-a"></div>
   <div class="hero-glow-b"></div>
+  <div class="hero-glow-c"></div>
   <div class="hero-badge">
     <span class="hero-badge-dot"></span>
     240 Prompts That Sound Like You, Not Like AI · PLR Included
   </div>
-  <h1>Stop Getting Generic AI Results.</h1>
+  <h1>Stop Getting <span class="hero-gradient-word">Generic</span> AI Results.</h1>
   <p class="hero-sub">You just got 240 prompts that sound like <em>you</em> — not a robot. Pick a category below, hit <strong style="color:#E6EDF3">Copy</strong>, fill the <span style="color:#FFA657;font-weight:600">[BRACKETS]</span> with your info, paste into ChatGPT. Most people save their first hour of work within 20 minutes.</p>
   <div class="stats-row">
     <div class="stat">
@@ -1392,6 +1479,7 @@
       📖 Guide
     </a>
   </div>
+
   <div class="subcat-nav" id="subcat-nav"><div class="subcat-nav-inner"></div></div>
 </nav>
 
@@ -1724,20 +1812,20 @@ function renderCard(p, q) {
     '  <div class="card-top">',
     '    <span class="card-badge" style="background:' + cfg.color + '1a;color:' + cfg.color + ';border:1px solid ' + cfg.color + '33">' + cfg.label + '</span>',
     '    <span class="card-num">#' + num + '</span>',
+    '    <div class="card-top-actions">',
+    '      <button class="btn-save' + (isSaved(p.id) ? ' saved' : '') + '" id="save-' + p.id + '" onclick="toggleSave(' + p.id + ')" title="Save to favorites" aria-label="' + (isSaved(p.id) ? 'Remove from saved' : 'Save to favorites') + '">⭐</button>',
+    '      <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand prompt') + '" aria-label="' + (isOpen ? 'Collapse prompt' : 'Expand prompt') + '" style="width:auto;padding:6px 10px;gap:4px;font-size:12px">',
+    '        ' + ICON_CHEV + (isOpen ? ' <span style="font-size:11px;color:var(--text-dim)">Hide</span>' : ' <span style="font-size:11px;color:var(--text-dim)">View</span>'),
+    '      </button>',
+    '    </div>',
     '  </div>',
     '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + (NEW_IDS.has(p.id) ? '<span class="new-badge">NEW</span>' : '') + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
-    '  <div class="card-actions">',
-    '    <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + '">',
-    '      ' + ICON_COPY + ' Copy Prompt',
-    '    </button>',
-    '    <button class="btn-save' + (isSaved(p.id) ? ' saved' : '') + '" id="save-' + p.id + '" onclick="toggleSave(' + p.id + ')" title="Save to favorites" aria-label="' + (isSaved(p.id) ? 'Remove from saved' : 'Save to favorites') + '">⭐</button>',
-    '    <button class="btn-expand' + (isOpen ? ' is-open' : '') + '" id="expand-' + p.id + '" onclick="toggleExpand(' + p.id + ')" title="' + (isOpen ? 'Collapse' : 'Expand prompt') + '" aria-label="' + (isOpen ? 'Collapse prompt' : 'Expand prompt') + '" style="width:auto;padding:8px 10px;gap:4px;font-size:12px">',
-    '      ' + ICON_CHEV + (isOpen ? ' <span style="font-size:11px;color:var(--text-dim)">Hide</span>' : ' <span style="font-size:11px;color:var(--text-dim)">View</span>'),
-    '    </button>',
-    '  </div>',
-    '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
+    '  <button class="btn-copy" id="copy-' + p.id + '" onclick="copyPrompt(event,' + p.id + ')" style="--accent:' + cfg.color + ';width:100%;margin-top:6px">',
+    '    ' + ICON_COPY + ' Copy Prompt',
+    '  </button>',
     '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">&#128161; Leave the <code>&lt;tags&gt;</code> in — they\'re the reason this doesn\'t sound like generic AI.</div>',
+    '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
     '  <div class="card-sample" id="sample-' + p.id + '">',
     '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
     '  </div>',
@@ -2051,6 +2139,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('scroll-top-btn');
     if (btn) btn.classList.toggle('show', window.scrollY > 400);
   }, { passive: true });
+
+  // Hero particles
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    const colors = ['#3B82F6','#8B5CF6','#10B981','#F59E0B','#60A5FA'];
+    function spawnParticle() {
+      const p = document.createElement('div');
+      p.className = 'hero-particle';
+      const size = 3 + Math.random() * 5;
+      const x = 10 + Math.random() * 80;
+      const dur = 3 + Math.random() * 4;
+      const delay = Math.random() * 2;
+      p.style.cssText = `width:${size}px;height:${size}px;left:${x}%;bottom:10%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${dur}s;animation-delay:${delay}s;filter:blur(1px)`;
+      hero.appendChild(p);
+      setTimeout(() => p.remove(), (dur + delay) * 1000 + 500);
+    }
+    setInterval(spawnParticle, 600);
+    for (let i = 0; i < 6; i++) setTimeout(spawnParticle, i * 200);
+  }
+
+  // Animated word-stagger on hero subtitle
+  const sub = document.querySelector('.hero-sub');
+  if (sub) {
+    const words = sub.innerHTML.split(' ');
+    sub.innerHTML = words.map((w, i) =>
+      `<span class="hero-word" style="animation-delay:${0.4 + i * 0.04}s">${w}</span>`
+    ).join(' ');
+  }
 });
 
 
