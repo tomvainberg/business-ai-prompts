@@ -1533,7 +1533,7 @@ function renderCard(p, q) {
     '  <div class="card-title">' + titleHL + (HOT_IDS.has(p.id) ? '<span class="hot-badge">🔥 Popular</span>' : '') + (DAILY_IDS.has(p.id) && currentCat !== 'daily' ? '<span class="hot-badge" style="background:rgba(245,158,11,.15);color:#F59E0B;border-color:rgba(245,158,11,.3)">⚡ Daily</span>' : '') + '</div>',
     '  <div class="card-for">' + forHL + '</div>',
     '  <div class="card-body' + (isOpen ? ' open' : '') + '" id="body-' + p.id + '">' + bodyHTML + '</div>',
-    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">💡 Leave the <code>&lt;tags&gt;</code> in — they're the reason this doesn't sound like generic AI.</div>',
+    '  <div class="card-xml-note' + (isOpen ? ' show' : '') + '" id="xmlnote-' + p.id + '">&#128161; Leave the <code>&lt;tags&gt;</code> in — they\'re the reason this doesn\'t sound like generic AI.</div>',
     '  <div class="card-sample" id="sample-' + p.id + '">',
     '    <div class="sample-label">&#128228; Sample Output</div>' + p.sample,
     '  </div>',
