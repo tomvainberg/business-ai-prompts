@@ -1110,6 +1110,45 @@
   .card-xml-note code { color: #79C0FF; font-size: 11px; }
 
 
+  /* ── ACCESS GATE ── */
+  .access-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .gate-card {
+    max-width: 420px; width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 44px 40px 36px;
+    text-align: center;
+  }
+  .gate-emoji { font-size: 48px; margin-bottom: 12px; }
+  .gate-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .gate-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.6; }
+  .gate-input {
+    width: 100%; padding: 14px 16px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 15px;
+    margin-bottom: 12px; outline: none; transition: border-color .18s;
+    font-family: inherit;
+  }
+  .gate-input:focus { border-color: #3B82F6; }
+  .gate-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #3B82F6, #6366F1);
+    border: none; border-radius: 10px;
+    color: #fff; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: opacity .18s, transform .12s;
+  }
+  .gate-btn:hover { opacity: .92; transform: translateY(-1px); }
+  .gate-btn:active { transform: scale(.98); }
+  .gate-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .gate-error { color: #F87171; font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .gate-hint { font-size: 12px; color: var(--text-dim); margin-top: 18px; line-height: 1.5; }
+
   /* ── NEW badge ── */
   .new-badge {
     display: inline-flex; align-items: center;
@@ -1123,6 +1162,19 @@
 </style>
 </head>
 <body>
+
+<!-- ── ACCESS GATE ── -->
+<div class="access-gate" id="access-gate">
+  <div class="gate-card">
+    <div class="gate-emoji">🎉</div>
+    <div class="gate-title">Your prompts are ready.</div>
+    <div class="gate-sub">Enter the email you used to purchase — and you're in.</div>
+    <input class="gate-input" type="email" id="gate-email" placeholder="your@email.com" autocomplete="email" />
+    <button class="gate-btn" id="gate-btn" onclick="unlockApp()">Get Access →</button>
+    <div class="gate-error" id="gate-error"></div>
+    <div class="gate-hint">Purchased on Etsy or Gumroad? Use the same email from your order confirmation.</div>
+  </div>
+</div>
 
 <a href="#main-content" class="sr-only">Skip to content</a>
 
@@ -1414,6 +1466,45 @@ const HOT_IDS = new Set([1, 3, 5, 51, 52, 55, 101, 102, 141, 143, 181, 183, 184]
 const DAILY_IDS = new Set([1, 4, 5, 11, 51, 52, 86, 91, 97, 101, 108, 141, 181, 183, 184]);
 // New this month — latest additions
 const NEW_IDS = new Set([160, 161, 162, 163, 164, 165, 181, 182, 183, 184, 220, 221, 222, 223, 224]);
+
+// ── ACCESS GATE ──
+const API = 'http://31.97.182.122:8010';
+function checkAccess() {
+  if (localStorage.getItem('pp-access') === '1') {
+    document.getElementById('access-gate').style.display = 'none';
+  }
+}
+function unlockApp() {
+  const email = document.getElementById('gate-email').value.trim().toLowerCase();
+  const err   = document.getElementById('gate-error');
+  const btn   = document.getElementById('gate-btn');
+  err.textContent = '';
+  if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
+  btn.disabled = true; btn.textContent = 'Checking…';
+  fetch(API + '/check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  })
+  .then(function(r) {
+    if (r.ok) {
+      localStorage.setItem('pp-access', '1');
+      localStorage.setItem('pp-email', email);
+      document.getElementById('access-gate').style.display = 'none';
+    } else {
+      err.textContent = 'Email not found. Use the email from your purchase confirmation.';
+      btn.disabled = false; btn.textContent = 'Get Access →';
+    }
+  })
+  .catch(function() {
+    err.textContent = 'Connection error — please try again.';
+    btn.disabled = false; btn.textContent = 'Get Access →';
+  });
+}
+document.addEventListener('keydown', function(e) {
+  const gate = document.getElementById('access-gate');
+  if (e.key === 'Enter' && gate && gate.style.display !== 'none') unlockApp();
+});
 
 const CAT_TIME = {
   marketing:  { label: '📣 Marketing & Content',  time: '~5 hrs/week', desc: 'content, emails, ads, social' },
@@ -1862,6 +1953,7 @@ function scrollToTop() {
 // INIT
 // ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
+  checkAccess();
   document.getElementById('total-count').textContent = PROMPTS.length;
   updateSavedCount();
   renderAll();
