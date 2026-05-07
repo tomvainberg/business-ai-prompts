@@ -1172,14 +1172,13 @@
 <!-- ── ACCESS GATE ── -->
 <div class="access-gate" id="access-gate">
   <div class="gate-card">
-    <div class="gate-emoji">🎉</div>
-    <div class="gate-title">Your prompts are ready.</div>
-    <div class="gate-sub">Enter your email and the access code from your PDF to unlock 240 prompts.</div>
-    <input class="gate-input" type="email" id="gate-email" placeholder="Your email address" autocomplete="email" />
-    <input class="gate-input" type="text" id="gate-code" placeholder="Access code (from your PDF)" autocomplete="off" style="text-transform:uppercase;letter-spacing:.08em" />
+    <div class="gate-emoji">🔐</div>
+    <div class="gate-title">Enter your access code</div>
+    <div class="gate-sub">Your code is on page 1 of the PDF you received after purchase.</div>
+    <input class="gate-input" type="text" id="gate-code" placeholder="Access code" autocomplete="off" style="text-transform:uppercase;letter-spacing:.1em;font-size:18px;text-align:center" />
     <button class="gate-btn" onclick="unlockApp()">Unlock My Prompts →</button>
     <div class="gate-error" id="gate-error"></div>
-    <div class="gate-hint">Find your access code inside the PDF you received after purchase.<br><strong>Purchased on Etsy or Gumroad?</strong> Check your download file.</div>
+    <div class="gate-hint">Purchased on <strong>Etsy</strong> or <strong>Gumroad</strong>? Open your download PDF — the code is at the top.</div>
   </div>
 </div>
 
@@ -1482,21 +1481,12 @@ function checkAccess() {
   }
 }
 function unlockApp() {
-  const email = document.getElementById('gate-email').value.trim();
-  const code  = document.getElementById('gate-code').value.trim().toUpperCase();
-  const err   = document.getElementById('gate-error');
+  const code = document.getElementById('gate-code').value.trim().toUpperCase();
+  const err  = document.getElementById('gate-error');
   err.textContent = '';
-  if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
-  if (code !== ACCESS_CODE) { err.textContent = 'Incorrect access code. Check your PDF — it\'s on page 1.'; return; }
+  if (code !== ACCESS_CODE) { err.textContent = 'Incorrect code. Check page 1 of your PDF.'; return; }
   localStorage.setItem('pp-access', '1');
-  localStorage.setItem('pp-email', email);
   document.getElementById('access-gate').style.display = 'none';
-  // Notify (fire & forget — silent if offline)
-  fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer re_Rt42EVY7_GgffGAUr4HoqFGcVwjKruggD', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: 'onboarding@resend.dev', to: 'weinberg.tom@gmail.com', subject: '🎉 New prompt pack unlock: ' + email, html: '<p>Email: <strong>' + email + '</strong></p><p>Code: ' + code + '</p><p>Time: ' + new Date().toISOString() + '</p>' })
-  }).catch(function(){});
 }
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.getElementById('access-gate').style.display !== 'none') unlockApp();
