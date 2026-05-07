@@ -1109,51 +1109,6 @@
   .card-xml-note.show { display: block; }
   .card-xml-note code { color: #79C0FF; font-size: 11px; }
 
-  /* ── ACCESS GATE ── */
-  .access-gate {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-  }
-  .gate-card {
-    max-width: 440px; width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 44px 40px 36px;
-    text-align: center;
-  }
-  .gate-emoji { font-size: 48px; margin-bottom: 12px; }
-  .gate-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-  .gate-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 28px; line-height: 1.5; }
-  .gate-input {
-    width: 100%; padding: 13px 16px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text); font-size: 15px;
-    margin-bottom: 12px; outline: none; transition: border-color .18s;
-    font-family: inherit;
-  }
-  .gate-input:focus { border-color: #3B82F6; }
-  .gate-btn {
-    width: 100%; padding: 14px;
-    background: linear-gradient(135deg, #3B82F6, #6366F1);
-    border: none; border-radius: 10px;
-    color: #fff; font-size: 15px; font-weight: 600;
-    cursor: pointer; margin-top: 4px;
-    transition: opacity .18s, transform .12s;
-  }
-  .gate-btn:hover { opacity: .92; transform: translateY(-1px); }
-  .gate-btn:active { transform: scale(.98); }
-  .gate-error {
-    color: #F87171; font-size: 13px;
-    margin-top: 10px; min-height: 18px;
-  }
-  .gate-hint {
-    font-size: 12px; color: var(--text-dim);
-    margin-top: 20px; line-height: 1.5;
-  }
-  .gate-hint strong { color: var(--text-muted); }
 
   /* ── NEW badge ── */
   .new-badge {
@@ -1168,19 +1123,6 @@
 </style>
 </head>
 <body>
-
-<!-- ── ACCESS GATE ── -->
-<div class="access-gate" id="access-gate">
-  <div class="gate-card">
-    <div class="gate-emoji">🔐</div>
-    <div class="gate-title">Enter your access code</div>
-    <div class="gate-sub">Your code is on page 1 of the PDF you received after purchase.</div>
-    <input class="gate-input" type="text" id="gate-code" placeholder="Access code" autocomplete="off" style="text-transform:uppercase;letter-spacing:.1em;font-size:18px;text-align:center" />
-    <button class="gate-btn" onclick="unlockApp()">Unlock My Prompts →</button>
-    <div class="gate-error" id="gate-error"></div>
-    <div class="gate-hint">Purchased on <strong>Etsy</strong> or <strong>Gumroad</strong>? Open your download PDF — the code is at the top.</div>
-  </div>
-</div>
 
 <a href="#main-content" class="sr-only">Skip to content</a>
 
@@ -1473,24 +1415,6 @@ const DAILY_IDS = new Set([1, 4, 5, 11, 51, 52, 86, 91, 97, 101, 108, 141, 181, 
 // New this month — latest additions
 const NEW_IDS = new Set([160, 161, 162, 163, 164, 165, 181, 182, 183, 184, 220, 221, 222, 223, 224]);
 
-// ── ACCESS GATE ──
-const ACCESS_CODE = 'BIZ240';
-function checkAccess() {
-  if (localStorage.getItem('pp-access') === '1') {
-    document.getElementById('access-gate').style.display = 'none';
-  }
-}
-function unlockApp() {
-  const code = document.getElementById('gate-code').value.trim().toUpperCase();
-  const err  = document.getElementById('gate-error');
-  err.textContent = '';
-  if (code !== ACCESS_CODE) { err.textContent = 'Incorrect code. Check page 1 of your PDF.'; return; }
-  localStorage.setItem('pp-access', '1');
-  document.getElementById('access-gate').style.display = 'none';
-}
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && document.getElementById('access-gate').style.display !== 'none') unlockApp();
-});
 const CAT_TIME = {
   marketing:  { label: '📣 Marketing & Content',  time: '~5 hrs/week', desc: 'content, emails, ads, social' },
   sales:      { label: '💼 Sales & Outreach',     time: '~4 hrs/week', desc: 'cold emails, proposals, follow-ups' },
@@ -1938,7 +1862,6 @@ function scrollToTop() {
 // INIT
 // ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  checkAccess();
   document.getElementById('total-count').textContent = PROMPTS.length;
   updateSavedCount();
   renderAll();
